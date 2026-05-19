@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,10 +7,11 @@
   <title>TaskHunt | Home</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../assets/libs/fontawesome/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/home.css">
+  <link rel="stylesheet" href="../assets/css/home.css?v=2">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
+  <script src="/assets/js/theme.js"></script>
 </head>
 
 <body>
@@ -460,6 +461,94 @@ if (!user) { window.location.href = 'login.html'; }
 const initials = user ? user.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?';
 document.getElementById('nav-avatar-circle').textContent = initials;
 document.getElementById('nav-user-name').textContent     = user ? user.name : '';
+
+// ── FORCE INJECT: Dark Mode button + Bell dropdown ───────
+(function forcePatch() {
+
+  // 1. Remove old hover behavior from CSS (inject override style)
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `
+    .profile-wrapper:hover .nav-dropdown { display: none !important; }
+    .nav-dropdown.open { display: block !important; }
+    body.dark-mode { background:#0f1923 !important; color:#d1dce8 !important; }
+    body.dark-mode nav { background:#152030 !important; border-bottom:1px solid #1e2f42 !important; }
+    body.dark-mode .hero-wrapper { background:#152030 !important; }
+    body.dark-mode .task-card { background:#152030 !important; }
+    body.dark-mode .task-card h3 { color:#e8f1fb !important; }
+    body.dark-mode .task-desc { color:#8eabc5 !important; }
+    body.dark-mode .task-category { background:#1e3a55 !important; color:#4eb8ff !important; }
+    body.dark-mode .task-price { color:#e8f1fb !important; }
+    body.dark-mode .task-skills span { background:#1e3a55 !important; color:#c5d4e3 !important; }
+    body.dark-mode .testi-card { background:#152030 !important; border-color:#1e2f42 !important; }
+    body.dark-mode .testi-text { color:#8eabc5 !important; }
+    body.dark-mode .category { background:#152030 !important; }
+    body.dark-mode .category h3 { color:#c5d4e3 !important; }
+    body.dark-mode .feature-card { background:#152030 !important; border-color:#1e2f42 !important; }
+    body.dark-mode .features-section { background:#0d1b27 !important; }
+    body.dark-mode .nav-dropdown { background:#152030 !important; border-color:#1e2f42 !important; }
+    body.dark-mode .nav-dropdown a { color:#c5d4e3 !important; border-bottom-color:#1e2f42 !important; }
+    body.dark-mode .nav-dropdown a:hover { background:#1e2f42 !important; }
+    body.dark-mode #nav-user-name { color:#e8f1fb !important; border-bottom-color:#1e2f42 !important; }
+    body.dark-mode .section-title, body.dark-mode .section-main-title, body.dark-mode .trending-header h2 { color:#e8f1fb !important; }
+    body.dark-mode h3 { color:#e8f1fb !important; }
+    body.dark-mode .hero-content h1 { color:#e8f1fb !important; }
+    body.dark-mode .hero-content p { color:#8eabc5 !important; }
+    body.dark-mode .search-input-wrapper { background:#1e2f42 !important; border-color:#2a3f57 !important; }
+    body.dark-mode .search-input-wrapper input { background:transparent !important; color:#d1dce8 !important; }
+    body.dark-mode #notifDropdown, body.dark-mode #msgDropdown { background:#152030 !important; border-color:#1e2f42 !important; }
+  `;
+  document.head.appendChild(styleEl);
+
+  // 2. Add onclick to avatar if missing
+  const avatar = document.getElementById('nav-avatar-circle');
+  if (avatar && !avatar.getAttribute('data-patched')) {
+    avatar.setAttribute('data-patched', '1');
+    avatar.onclick = toggleProfileDropdown;
+  }
+
+  // 3. Add Dark Mode button to dropdown if missing
+  const dropdown = document.querySelector('.nav-dropdown');
+  if (dropdown && !document.getElementById('dark-mode-btn')) {
+    const logoutLink = dropdown.querySelector('a[onclick*="logout"]');
+    const dmBtn = document.createElement('a');
+    dmBtn.href = '#';
+    dmBtn.id = 'dark-mode-btn';
+    dmBtn.style.cssText = 'color:#555;display:flex;align-items:center;gap:8px;';
+    dmBtn.innerHTML = '<i class="fa-solid fa-moon"></i> Dark Mode';
+    dmBtn.onclick = function(e) { e.preventDefault(); toggleDarkMode(); };
+    if (logoutLink) dropdown.insertBefore(dmBtn, logoutLink);
+    else dropdown.appendChild(dmBtn);
+  }
+
+  // 4. Fix bell onclick if missing notification dropdown
+  const bell = document.querySelector('.notifications.animated-bell');
+  if (bell && !document.getElementById('notifDropdown')) {
+    bell.onclick = toggleNotifDropdown;
+    const nd = document.createElement('div');
+    nd.id = 'notifDropdown';
+    nd.style.cssText = 'display:none;position:absolute;top:40px;right:-10px;width:320px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;';
+    nd.innerHTML = `
+      <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">Notifications</div>
+      <div id="notifDropList" style="max-height:300px;overflow-y:auto;"></div>
+      <a href="dashboard/dash-client.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Notifications →</a>`;
+    bell.appendChild(nd);
+  }
+
+  // 5. Restore dark mode if saved
+  if (localStorage.getItem('darkMode') === '1') {
+    document.body.classList.add('dark-mode');
+    const btn = document.getElementById('dark-mode-btn');
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-sun"></i> Light Mode';
+  }
+
+  // 6. Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    const nd = document.getElementById('notifDropdown'); if (nd) nd.style.display = 'none';
+    const md = document.getElementById('msgDropdown');   if (md) md.style.display = 'none';
+    document.querySelector('.nav-dropdown')?.classList.remove('open');
+  });
+
+})();
 
 // ── Helpers ─────────────────────────────────────────────
 function timeAgo(dateStr) {

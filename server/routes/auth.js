@@ -86,6 +86,25 @@ router.put('/me', require('../middleware/auth').requireAuth, (req, res) => {
   res.json(user);
 });
 
+// PUT /api/auth/password — change password
+router.put('/password', require('../middleware/auth').requireAuth, (req, res) => {
+  const { current_password, new_password } = req.body;
+  if (!current_password || !new_password)
+    return res.status(400).json({ error: 'Current and new password are required' });
+  if (new_password.length < 6)
+    return res.status(400).json({ error: 'New password must be at least 6 characters' });
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const valid = bcrypt.compareSync(current_password, user.password);
+  if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
+
+  const hash = bcrypt.hashSync(new_password, 10);
+  db.prepare('UPDATE users SET password = ? WHERE id = ?').run(hash, req.user.id);
+  res.json({ message: 'Password changed successfully' });
+});
+
 // GET /api/auth/my-proposals — freelancer's submitted proposals
 router.get('/my-proposals', require('../middleware/auth').requireAuth, (req, res) => {
   const proposals = db.prepare(`

@@ -31,10 +31,14 @@ router.get('/:id/profile', (req, res) => {
   } else {
     const profile = db.prepare('SELECT * FROM client_profiles WHERE user_id=?').get(userId);
     const stats   = db.prepare('SELECT COUNT(*) AS total_posts FROM posts WHERE user_id=?').get(userId);
+    const posts   = db.prepare(
+      'SELECT id, title, category, budget, status, created_at FROM posts WHERE user_id=? ORDER BY created_at DESC LIMIT 10'
+    ).all(userId);
     return res.json({
       ...user,
       ...(profile || {}),
-      total_posts: stats?.total_posts || 0
+      total_posts:  stats?.total_posts || 0,
+      recent_posts: posts
     });
   }
 });

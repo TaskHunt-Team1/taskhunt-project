@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -610,6 +610,7 @@ nav ul li a:hover {
             }
         }
     </style>
+  <script src="/assets/js/theme.js"></script>
 </head>
 
 <body>
@@ -724,9 +725,8 @@ nav ul li a:hover {
                 <div class="section-header">
                     <h2>Work preferences</h2>
                 </div>
-                <div class="about-text" style="background: #f9fbfd; padding: 18px; border-radius: 24px;">
-                    <i class="fas fa-clock"></i> Full-time freelance · Available for remote contracts · <strong>Response
-                        rate:</strong> 98%
+                <div id="workPrefsText" class="about-text" style="background: #f9fbfd; padding: 18px; border-radius: 24px;">
+                    <i class="fas fa-clock"></i> Full-time freelance · Available for remote contracts · <strong>Response rate:</strong> 98%
                 </div>
             </div>
         </div>
@@ -786,140 +786,245 @@ nav ul li a:hover {
     </footer>
     <script src="../../assets/js/api.js"></script>
     <script>
-        // ── Auth guard ────────────────────────────────────────────
-        const _authUser = Auth.user();
-        if (!_authUser) window.location.href = '../login.html';
+        // ── Auth guard ─────────────────────────────────────────────
+        if (!Auth.isLoggedIn()) window.location.href = '../login.html';
+        const _me = Auth.user();
 
-        // PROFILE STATE — loaded from DB
+        // ── Profile state (populated from API) ────────────────────
         let profileData = {
-            fullName: _authUser ? _authUser.name : '',
-            title: _authUser ? (_authUser.role === 'freelancer' ? 'Professional Freelancer' : 'Client') : '',
-            location: 'Cairo, Egypt',
-            about: '',
-            skills: [],
-            projects: 0,
-            clients: 0,
-            rating: 0,
-            points: 0,
-            memberYear: 2025
+            display_name:     _me ? _me.name : '',
+            title:            'Professional Freelancer',
+            bio:              '',
+            city:             '',
+            country:          '',
+            avatar:           null,
+            experience_level: '',
+            hourly_rate:      '',
+            _skills:          [],
+            projects_done:    0,
+            review_count:     0,
+            avg_rating:       null,
+            memberYear:       new Date().getFullYear()
         };
 
-        // DOM elements
-        const displayName = document.getElementById('displayName');
-        const displayTitle = document.getElementById('displayTitle');
-        const displayLocation = document.getElementById('displayLocation');
-        const aboutTextDisplay = document.getElementById('aboutTextDisplay');
-        const skillsGrid = document.getElementById('skillsGrid');
-        const statProjects = document.getElementById('statProjects');
-        const statClients = document.getElementById('statClients');
-        const statRating = document.getElementById('statRating');
-        const pointsDisplay = document.getElementById('pointsDisplay');
-        const profileAvatar = document.getElementById('profileAvatar');
-
+        // ── Helpers ───────────────────────────────────────────────
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c =>
+                ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
         function getInitials(name) {
-            return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+            return (name || 'U').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
         }
-
-        function updateAllUI() {
-            if (displayName) displayName.innerText = profileData.fullName;
-            if (displayTitle) displayTitle.innerText = profileData.title;
-            if (displayLocation) displayLocation.innerText = profileData.location;
-            if (aboutTextDisplay) aboutTextDisplay.innerText = profileData.about || 'No bio yet — click Edit to add one.';
-            if (statProjects) statProjects.innerText = profileData.projects;
-            if (statClients) statClients.innerText = profileData.clients;
-            if (statRating) statRating.innerText = profileData.rating || '—';
-            if (pointsDisplay) pointsDisplay.innerText = `Member since ${profileData.memberYear}`;
-
-            // update avatar circles
-            const av = document.getElementById('profileAvatar');
-            if (av) av.textContent = profileData.fullName ? getInitials(profileData.fullName) : '?';
-            const navAv = document.getElementById('nav-avatar-circle');
-            if (navAv) navAv.textContent = profileData.fullName ? getInitials(profileData.fullName) : '?';
-            const navName = document.getElementById('nav-user-name');
-            if (navName) navName.textContent = profileData.fullName;
-
-            // render skills
-            if (skillsGrid) {
-                skillsGrid.innerHTML = '';
-                profileData.skills.forEach(skill => {
-                    const tag = document.createElement('span');
-                    tag.className = 'skill-tag';
-                    tag.innerText = skill;
-                    skillsGrid.appendChild(tag);
-                });
-            }
-        }
-
-        // helper toast
-        function showFloatingMessage(msg, duration = 2000) {
+        function showFloatingMessage(msg, duration = 2500) {
             const existing = document.querySelector('.toast-msg');
             if (existing) existing.remove();
             const toast = document.createElement('div');
             toast.className = 'toast-msg';
-            toast.innerHTML = `<i class="fas fa-save"></i> ${msg}`;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), duration);
         }
 
-        // ---------- EDIT PROFILE (full name, title, location, stats inline via modal-style but native) ----------
+        // ── Render all UI from profileData ────────────────────────
+        function renderProfile() {
+            // Avatar
+            const av = document.getElementById('profileAvatar');
+            if (av) {
+                if (profileData.avatar) {
+                    av.innerHTML = `<img src="${profileData.avatar}" style="width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid white;box-shadow:0 12px 28px rgba(0,0,0,0.08);">`;
+                    av.style.background = 'transparent';
+                } else {
+                    av.textContent = getInitials(profileData.display_name);
+                    av.style.background = '#0090E0';
+                }
+            }
+            // Old navbar avatar (if still present)
+            const navAv = document.getElementById('nav-avatar-circle');
+            if (navAv) {
+                if (profileData.avatar) {
+                    navAv.innerHTML = `<img src="${profileData.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                    navAv.style.background = 'transparent';
+                } else {
+                    navAv.textContent = getInitials(profileData.display_name);
+                }
+            }
+            const navName = document.getElementById('nav-user-name');
+            if (navName) navName.textContent = profileData.display_name || '';
+
+            // Name / title / location / member year
+            const dn = document.getElementById('displayName');
+            if (dn) dn.textContent = profileData.display_name || '';
+            const dt = document.getElementById('displayTitle');
+            if (dt) dt.textContent = profileData.title || 'Professional Freelancer';
+            const dl = document.getElementById('displayLocation');
+            if (dl) dl.textContent = [profileData.city, profileData.country].filter(Boolean).join(', ') || 'Location not set';
+            const pd = document.getElementById('pointsDisplay');
+            if (pd) pd.textContent = `Member since ${profileData.memberYear}`;
+
+            // Stats
+            const sp = document.getElementById('statProjects');
+            if (sp) sp.textContent = profileData.projects_done || 0;
+            const sc = document.getElementById('statClients');
+            if (sc) sc.textContent = profileData.review_count || 0;
+            const sr = document.getElementById('statRating');
+            if (sr) sr.textContent = profileData.avg_rating ? Number(profileData.avg_rating).toFixed(1) : '—';
+
+            // About
+            const about = document.getElementById('aboutTextDisplay');
+            if (about) about.textContent = profileData.bio || 'No bio yet — click Edit to add one.';
+
+            // Skills (only when not in edit mode)
+            if (!skillsEditActive) {
+                const grid = document.getElementById('skillsGrid');
+                if (grid) {
+                    grid.innerHTML = profileData._skills.length
+                        ? profileData._skills.map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('')
+                        : '<span style="color:#9ab;font-size:14px;">No skills added yet. Click Manage to add.</span>';
+                }
+            }
+
+            // Work preferences
+            const wp = document.getElementById('workPrefsText');
+            if (wp) {
+                const parts = [];
+                if (profileData.experience_level) parts.push(profileData.experience_level.charAt(0).toUpperCase() + profileData.experience_level.slice(1) + ' level');
+                if (profileData.hourly_rate) parts.push(`$${profileData.hourly_rate}/hr`);
+                parts.push('Available for remote contracts');
+                wp.innerHTML = `<i class="fas fa-clock"></i> ${parts.join(' · ')} · <strong>Response rate:</strong> 98%`;
+            }
+        }
+
+        // ── Save to API ───────────────────────────────────────────
+        async function saveToAPI() {
+            const body = {
+                display_name:     profileData.display_name_alias,
+                title:            profileData.title,
+                bio:              profileData.bio,
+                city:             profileData.city,
+                country:          profileData.country,
+                skills:           JSON.stringify(profileData._skills),
+                avatar:           profileData.avatar,
+                experience_level: profileData.experience_level,
+                hourly_rate:      profileData.hourly_rate || null
+            };
+            const res = await fetch('/api/profiles/freelancer', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.token() },
+                body:    JSON.stringify(body)
+            });
+            if (!res.ok) throw new Error('Save failed');
+        }
+
+        // ── Load from API ─────────────────────────────────────────
+        async function fetchAndRender() {
+            try {
+                const [profileRes, meRes] = await Promise.all([
+                    fetch('/api/profiles/freelancer', { headers: { 'Authorization': 'Bearer ' + Auth.token() } }),
+                    fetch('/api/auth/me',              { headers: { 'Authorization': 'Bearer ' + Auth.token() } })
+                ]);
+                // profile can be null if setup not done yet — default to {}
+                const profile = (await profileRes.json()) || {};
+                const me      = await meRes.json();
+
+                // Always show registered name (me.name) on own profile page
+                // display_name is saved for public-facing alias (what others see)
+                profileData.display_name     = me.name                  || '';
+                profileData.display_name_alias = profile.display_name   || me.name || '';
+                profileData.title            = profile.title            || 'Professional Freelancer';
+                profileData.bio              = profile.bio              || '';
+                profileData.city             = profile.city             || '';
+                profileData.country          = profile.country          || '';
+                profileData.avatar           = profile.avatar           || null;
+                profileData.experience_level = profile.experience_level || '';
+                profileData.hourly_rate      = profile.hourly_rate      || '';
+                profileData.memberYear       = new Date(me.created_at || Date.now()).getFullYear();
+
+                // Parse skills safely
+                const rawSkills = profile.skills;
+                if (rawSkills && rawSkills !== '[]' && rawSkills !== 'null') {
+                    try { profileData._skills = JSON.parse(rawSkills); }
+                    catch(_) { profileData._skills = rawSkills.split(',').map(s => s.trim()).filter(Boolean); }
+                } else {
+                    profileData._skills = [];
+                }
+
+                // Stats from public profile endpoint
+                const statsRes = await fetch('/api/users/' + me.id + '/profile');
+                if (statsRes.ok) {
+                    const stats = await statsRes.json();
+                    profileData.projects_done = stats.projects_done || 0;
+                    profileData.avg_rating    = stats.avg_rating    || null;
+                    profileData.review_count  = stats.review_count  || 0;
+                }
+
+                renderProfile();
+            } catch(e) {
+                console.error('Profile load error:', e);
+            }
+        }
+
+        // ── Edit Profile overlay ──────────────────────────────────
         function openFullProfileEditor() {
             const heroDiv = document.querySelector('.hero-inner');
-            const originalContent = heroDiv.cloneNode(true);
-
             const editOverlay = document.createElement('div');
-            editOverlay.style.background = 'white';
-            editOverlay.style.padding = '24px';
-            editOverlay.style.borderRadius = '32px';
-            editOverlay.style.boxShadow = '0 20px 35px rgba(0,0,0,0.1)';
-            editOverlay.style.width = '100%';
-
+            editOverlay.style.cssText = 'background:white;padding:28px;border-radius:32px;box-shadow:0 20px 35px rgba(0,0,0,0.1);width:100%;';
             editOverlay.innerHTML = `
-            <h3 style="margin-bottom: 18px; font-weight: 600;">Edit profile details</h3>
-            <label>Full name</label>
-            <input id="editFullName" class="edit-input-simple" value="${escapeHtml(profileData.fullName)}" style="margin-bottom: 16px;">
-            <label>Professional title</label>
-            <input id="editTitleInput" class="edit-input-simple" value="${escapeHtml(profileData.title)}" style="margin-bottom: 16px;">
-            <label>Location</label>
-            <input id="editLocationInput" class="edit-input-simple" value="${escapeHtml(profileData.location)}" style="margin-bottom: 16px;">
-            <div style="display: flex; gap: 20px; margin-top: 8px; flex-wrap: wrap;">
-                <div><label>Projects count</label><input id="editProjects" type="number" value="${profileData.projects}" style="width: 90px; padding:8px; border-radius: 20px; border:1px solid #ccc;"></div>
-                <div><label>Happy clients</label><input id="editClients" type="number" value="${profileData.clients}" style="width: 90px; padding:8px; border-radius: 20px;"></div>
-                <div><label>Rating (0-5)</label><input id="editRating" step="0.1" type="number" value="${profileData.rating}" style="width: 90px; padding:8px;"></div>
-                <div><label>Points</label><input id="editPoints" type="number" value="${profileData.points}" style="width: 110px; padding:8px;"></div>
-            </div>
-            <div class="button-group" style="margin-top: 28px;">
-                <button id="saveProfileEditsBtn" class="btn signup" style="background:#0066cc;">Save all</button>
-                <button id="cancelProfileEditsBtn" class="btn login">Cancel</button>
-            </div>
-        `;
+                <h3 style="margin-bottom:20px;font-weight:700;color:#0b2b3d;">Edit profile details</h3>
+                <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">Display name <span style="font-size:11px;color:#9ab;font-weight:400;">(how others see you in proposals)</span></label>
+                <input id="editFullName" class="edit-input-simple" value="${escapeHtml(profileData.display_name_alias)}" style="margin-bottom:14px;">
+                <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">Professional title</label>
+                <input id="editTitleInput" class="edit-input-simple" value="${escapeHtml(profileData.title)}" style="margin-bottom:14px;">
+                <div style="display:flex;gap:12px;margin-bottom:14px;">
+                    <div style="flex:1;">
+                        <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">City</label>
+                        <input id="editCityInput" class="edit-input-simple" value="${escapeHtml(profileData.city)}" placeholder="e.g. Cairo">
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">Country</label>
+                        <input id="editCountryInput" class="edit-input-simple" value="${escapeHtml(profileData.country)}" placeholder="e.g. Egypt">
+                    </div>
+                </div>
+                <div style="display:flex;gap:12px;margin-bottom:14px;">
+                    <div style="flex:1;">
+                        <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">Experience level</label>
+                        <select id="editExpLevel" class="edit-input-simple" style="appearance:auto;cursor:pointer;">
+                            <option value="">Select…</option>
+                            <option value="beginner"     ${profileData.experience_level==='beginner'?'selected':''}>Beginner</option>
+                            <option value="intermediate" ${profileData.experience_level==='intermediate'?'selected':''}>Intermediate</option>
+                            <option value="expert"       ${profileData.experience_level==='expert'?'selected':''}>Expert</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <label style="font-size:13px;font-weight:600;color:#555;display:block;margin-bottom:4px;">Hourly rate ($)</label>
+                        <input id="editHourlyRate" class="edit-input-simple" type="number" min="0" value="${escapeHtml(String(profileData.hourly_rate || ''))}" placeholder="e.g. 25">
+                    </div>
+                </div>
+                <div class="button-group" style="margin-top:20px;">
+                    <button id="saveProfileEditsBtn" style="background:#0066cc;color:white;padding:11px 28px;border:none;border-radius:40px;font-weight:700;cursor:pointer;font-size:14px;">Save changes</button>
+                    <button id="cancelProfileEditsBtn" class="btn-outline">Cancel</button>
+                </div>`;
 
-            const originalParent = heroDiv.parentNode;
-            const tempContainer = document.createElement('div');
-            tempContainer.appendChild(editOverlay);
             heroDiv.style.display = 'none';
-            originalParent.insertBefore(editOverlay, heroDiv.nextSibling);
+            heroDiv.parentNode.insertBefore(editOverlay, heroDiv.nextSibling);
 
-            document.getElementById('saveProfileEditsBtn').addEventListener('click', () => {
-                const newName = document.getElementById('editFullName').value.trim();
-                const newTitle = document.getElementById('editTitleInput').value.trim();
-                const newLoc = document.getElementById('editLocationInput').value.trim();
-                const newProj = parseInt(document.getElementById('editProjects').value) || 0;
-                const newCli = parseInt(document.getElementById('editClients').value) || 0;
-                const newRat = parseFloat(document.getElementById('editRating').value);
-                const newPts = parseInt(document.getElementById('editPoints').value) || 0;
-
-                if (newName) profileData.fullName = newName;
-                if (newTitle) profileData.title = newTitle;
-                if (newLoc) profileData.location = newLoc;
-                profileData.projects = newProj;
-                profileData.clients = newCli;
-                if (!isNaN(newRat) && newRat >= 0 && newRat <= 5) profileData.rating = newRat;
-                profileData.points = newPts;
-
-                updateAllUI();
+            document.getElementById('saveProfileEditsBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('saveProfileEditsBtn');
+                btn.textContent = 'Saving…'; btn.disabled = true;
+                profileData.display_name_alias = document.getElementById('editFullName').value.trim() || profileData.display_name_alias;
+                profileData.title            = document.getElementById('editTitleInput').value.trim()  || profileData.title;
+                profileData.city             = document.getElementById('editCityInput').value.trim();
+                profileData.country          = document.getElementById('editCountryInput').value.trim();
+                profileData.experience_level = document.getElementById('editExpLevel').value;
+                profileData.hourly_rate      = document.getElementById('editHourlyRate').value || '';
+                try {
+                    await saveToAPI();
+                    showFloatingMessage('Profile updated successfully ✨');
+                } catch(_) {
+                    showFloatingMessage('Failed to save — try again');
+                }
                 editOverlay.remove();
                 heroDiv.style.display = 'flex';
-                showFloatingMessage("Profile updated successfully ✨");
+                renderProfile();
             });
 
             document.getElementById('cancelProfileEditsBtn').addEventListener('click', () => {
@@ -928,84 +1033,100 @@ nav ul li a:hover {
             });
         }
 
-        // ESCAPE helper
-        function escapeHtml(str) { return String(str).replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-
-        // ----- ABOUT EDIT (inline)
+        // ── About edit (inline) ───────────────────────────────────
         let aboutEditMode = false;
         function enterAboutEdit() {
             if (aboutEditMode) return;
             aboutEditMode = true;
             const container = document.getElementById('aboutContainer');
-            const originalText = profileData.about;
-            container.innerHTML = `<textarea id="aboutEditArea" class="edit-textarea" rows="5">${escapeHtml(originalText)}</textarea><div class="button-group"><button id="saveAboutBtn" class="btn signup" style="background:#0066cc;">Save</button><button id="cancelAboutBtn" class="btn login">Cancel</button></div>`;
+            container.innerHTML = `
+                <textarea id="aboutEditArea" class="edit-textarea" rows="5">${escapeHtml(profileData.bio)}</textarea>
+                <div class="button-group">
+                    <button id="saveAboutBtn" style="background:#0066cc;color:white;padding:10px 24px;border:none;border-radius:40px;font-weight:600;cursor:pointer;">Save</button>
+                    <button id="cancelAboutBtn" class="btn-outline">Cancel</button>
+                </div>`;
             document.getElementById('saveAboutBtn').addEventListener('click', async () => {
-                const newVal = document.getElementById('aboutEditArea').value;
-                if (newVal.trim()) profileData.about = newVal;
-                try { await updateMe({ bio: profileData.about }); } catch(e) {}
-                updateAllUI();
+                profileData.bio = document.getElementById('aboutEditArea').value.trim();
+                try { await saveToAPI(); showFloatingMessage('About updated'); } catch(_) {}
                 aboutEditMode = false;
                 renderAboutNormal();
-                showFloatingMessage("About section updated");
+                renderProfile();
             });
             document.getElementById('cancelAboutBtn').addEventListener('click', () => {
-                renderAboutNormal();
                 aboutEditMode = false;
+                renderAboutNormal();
             });
         }
         function renderAboutNormal() {
             const container = document.getElementById('aboutContainer');
-            container.innerHTML = `<div class="about-text" id="aboutTextDisplay">${escapeHtml(profileData.about)}</div>`;
-            document.getElementById('aboutTextDisplay').innerText = profileData.about;
+            container.innerHTML = `<div class="about-text" id="aboutTextDisplay">${escapeHtml(profileData.bio) || 'No bio yet — click Edit to add one.'}</div>`;
         }
 
-        // ----- SKILLS EDIT (advanced)
+        // ── Skills edit ───────────────────────────────────────────
         let skillsEditActive = false;
         function renderSkillsEditMode() {
             const wrapper = document.getElementById('skillsWrapper');
-            let skillsHtml = `<div class="skill-edit-wrapper" style="flex-wrap: wrap; gap: 12px; background: #fefcff; padding: 12px; border-radius: 32px;">`;
-            profileData.skills.forEach((skill, idx) => {
-                skillsHtml += `<span class="skill-tag" style="background:#e6f0fa; display:inline-flex; gap:8px;">${escapeHtml(skill)} <i class="fas fa-times-circle" style="color:#8f9eb2; cursor:pointer;" data-skill-index="${idx}"></i></span>`;
-            });
-            skillsHtml += `<input type="text" id="newSkillField" placeholder="New skill..." style="padding:8px 16px; border-radius:40px; border:1px solid #cbdde9;"> 
-                        <button id="addSkillBtnConfirm" class="btn-outline" style="background:#0066cc; color:white;">+ Add</button>
-                        <button id="cancelSkillEditBtn" class="btn-outline">Done</button></div>`;
-            wrapper.innerHTML = skillsHtml;
-            document.querySelectorAll('[data-skill-index]').forEach(el => {
-                el.addEventListener('click', (e) => {
-                    const idx = parseInt(el.getAttribute('data-skill-index'));
-                    if (!isNaN(idx)) { profileData.skills.splice(idx, 1); renderSkillsEditMode(); showFloatingMessage("Skill removed"); updateAllUI(); }
+            const tagsHtml = profileData._skills.map((s, i) =>
+                `<span class="skill-tag" style="background:#e6f0fa;display:inline-flex;gap:8px;">${escapeHtml(s)}
+                    <i class="fas fa-times-circle" style="color:#8f9eb2;cursor:pointer;" data-idx="${i}"></i>
+                </span>`).join('');
+            wrapper.innerHTML = `
+                <div class="skill-edit-wrapper" style="flex-wrap:wrap;gap:12px;background:#fefcff;padding:12px;border-radius:32px;">
+                    ${tagsHtml}
+                    <input type="text" id="newSkillField" placeholder="New skill…" style="padding:8px 16px;border-radius:40px;border:1px solid #cbdde9;">
+                    <button id="addSkillBtn" class="btn-outline" style="background:#0066cc;color:white;">+ Add</button>
+                    <button id="doneSkillBtn" class="btn-outline">Done</button>
+                </div>`;
+            wrapper.querySelectorAll('[data-idx]').forEach(el => {
+                el.addEventListener('click', async () => {
+                    profileData._skills.splice(parseInt(el.dataset.idx), 1);
+                    try { await saveToAPI(); } catch(_) {}
+                    renderSkillsEditMode();
+                    showFloatingMessage('Skill removed');
                 });
             });
-            document.getElementById('addSkillBtnConfirm')?.addEventListener('click', () => {
+            document.getElementById('addSkillBtn').addEventListener('click', async () => {
                 const inp = document.getElementById('newSkillField');
-                if (inp.value.trim() !== "") { profileData.skills.push(inp.value.trim()); inp.value = ""; renderSkillsEditMode(); updateAllUI(); showFloatingMessage("Skill added"); }
+                const val = inp.value.trim();
+                if (!val) return;
+                profileData._skills.push(val);
+                inp.value = '';
+                try { await saveToAPI(); } catch(_) {}
+                renderSkillsEditMode();
+                showFloatingMessage('Skill added');
             });
-            document.getElementById('cancelSkillEditBtn')?.addEventListener('click', () => { exitSkillEdit(); });
+            document.getElementById('newSkillField').addEventListener('keydown', e => {
+                if (e.key === 'Enter') { e.preventDefault(); document.getElementById('addSkillBtn').click(); }
+            });
+            document.getElementById('doneSkillBtn').addEventListener('click', () => {
+                skillsEditActive = false;
+                renderProfile();
+            });
         }
-        function exitSkillEdit() { skillsEditActive = false; updateAllUI(); }
-        function enterSkillEdit() { skillsEditActive = true; renderSkillsEditMode(); }
 
-        // event triggers
+        // ── Avatar upload ─────────────────────────────────────────
+        document.getElementById('avatarUpload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                profileData.avatar = e.target.result;
+                try { await saveToAPI(); showFloatingMessage('Photo updated ✨'); } catch(_) {}
+                renderProfile();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ── Event listeners ───────────────────────────────────────
         document.getElementById('openEditProfileBtn').addEventListener('click', openFullProfileEditor);
         document.getElementById('editAboutTrigger').addEventListener('click', enterAboutEdit);
-        document.getElementById('editSkillsTrigger').addEventListener('click', () => { if (skillsEditActive) exitSkillEdit(); else enterSkillEdit(); });
+        document.getElementById('editSkillsTrigger').addEventListener('click', () => {
+            if (skillsEditActive) { skillsEditActive = false; renderProfile(); }
+            else { skillsEditActive = true; renderSkillsEditMode(); }
+        });
 
-        // initial render with cached user, then fetch real data
-        updateAllUI();
-
-        getMe().then(u => {
-            profileData.fullName = u.name;
-            profileData.about    = u.bio || '';
-            profileData.title    = u.role === 'freelancer' ? 'Professional Freelancer' : 'Client';
-            profileData.memberYear = new Date(u.created_at).getFullYear();
-            updateAllUI();
-            return getMyProposals().catch(() => []);
-        }).then(proposals => {
-            profileData.projects = proposals.length;
-            profileData.clients  = proposals.filter(p => p.status === 'accepted').length;
-            updateAllUI();
-        }).catch(() => {});
+        // ── Init ──────────────────────────────────────────────────
+        fetchAndRender();
     </script>
 </body>
 

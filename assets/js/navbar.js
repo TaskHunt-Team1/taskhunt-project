@@ -47,22 +47,41 @@
     .th-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
     .th-prof-drop {
       display:none; position:absolute; top:44px; right:0;
-      min-width:180px; background:#fff; border-radius:12px;
+      min-width:200px; background:#fff; border-radius:12px;
       box-shadow:0 8px 28px rgba(0,0,0,0.13); border:1px solid #eee;
       overflow:hidden; z-index:2000;
     }
-    .th-profile-wrap:hover .th-prof-drop { display:block; }
+    .th-prof-drop.open { display:block; }
     .th-prof-drop .th-drop-name {
       display:block; padding:10px 16px; font-weight:700; color:#051923;
       border-bottom:1px solid #eee; font-size:13px;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
-    .th-prof-drop a {
-      display:block; padding:10px 16px; color:#051923;
+    .th-prof-drop a, .th-prof-drop button.th-drop-item {
+      display:flex; align-items:center; gap:10px;
+      width:100%; box-sizing:border-box;
+      padding:10px 16px; color:#051923;
       text-decoration:none; font-size:13px; transition:background .15s;
+      background:none; border:none; cursor:pointer; text-align:left;
+      font-family:inherit;
     }
-    .th-prof-drop a:hover { background:#f0f6ff; }
+    .th-prof-drop a:hover, .th-prof-drop button.th-drop-item:hover { background:#f0f6ff; }
     .th-prof-drop a.th-logout { color:#e53e3e; }
+    .th-prof-drop .th-theme-toggle { border-top:1px solid #eee; justify-content:space-between; }
+    .th-prof-drop .th-theme-toggle .th-switch {
+      position:relative; width:34px; height:18px; border-radius:10px;
+      background:#cbd5e1; transition:background .2s; flex-shrink:0;
+    }
+    .th-prof-drop .th-theme-toggle .th-switch::after {
+      content:''; position:absolute; top:2px; left:2px;
+      width:14px; height:14px; border-radius:50%; background:#fff;
+      transition:transform .2s;
+    }
+
+    /* Notifications dropdown (extra rules; inline styles handle base layout) */
+    .th-notif-item.unread { background:#f0f8ff; }
+    .th-notif-item:hover { background:#eef5ff; }
+
     .th-nav .th-toggle { display:none; font-size:22px; cursor:pointer; color:#333; background:none; border:none; }
     @media (max-width:768px) {
       .th-nav .th-links {
@@ -77,6 +96,13 @@
     }
   `;
   document.head.appendChild(style);
+
+  // Ensure theme.js is loaded (handles early data-theme apply + dark CSS site-wide)
+  if (!document.querySelector('script[src*="/assets/js/theme.js"]')) {
+    const ts = document.createElement('script');
+    ts.src = '/assets/js/theme.js';
+    document.head.appendChild(ts);
+  }
 
   // ── Nav HTML ──────────────────────────────────────────────────────
   const nav = document.createElement('nav');
@@ -133,17 +159,36 @@
     const dashUrl = user.role === 'client'
       ? '/html/dashboard/dash-client.html'
       : '/html/dashboard/freelancer.html';
-    const extraHtml = user.role === 'client'
-      ? `<a href="/html/post-a-job.html" style="color:#0090E0;font-weight:600;">+ Post a Job</a>`
-      : `<a href="/html/work.html"       style="color:#0090E0;font-weight:600;">Browse Jobs</a>`;
+
+    // Update logo to role-specific home page
+    const logoLink = nav.querySelector('.th-logo a');
+    if (logoLink) {
+      logoLink.href = user.role === 'client'
+        ? '/html/client-home.html'
+        : '/html/freelancers-home.html';
+    }
+
+    const profileLink = user.role === 'freelancer'
+      ? `<a href="/html/dashboard/my-profile.html"><i class="fa-solid fa-user" style="width:16px;margin-right:6px;"></i>My Profile</a>`
+      : '';
 
     right.innerHTML = `
-      <div style="position:relative;cursor:pointer;" onclick="location.href='${dashUrl}'" title="Notifications">
+      <div id="thNotifWrap" style="position:relative;cursor:pointer;" onclick="thToggleNotif(event)" title="Notifications">
         <i class="fa-solid fa-bell" style="font-size:20px;color:#555;"></i>
         <span id="thNotifBadge" style="display:none;position:absolute;top:-5px;right:-6px;
           background:#ef4444;color:#fff;font-size:10px;font-weight:700;
           min-width:17px;height:17px;border-radius:9px;padding:0 4px;
           align-items:center;justify-content:center;"></span>
+        <div id="thNotifDrop" style="display:none;position:absolute;top:40px;right:-10px;
+          width:320px;background:#fff;border-radius:14px;
+          box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:2000;border:1px solid #eee;overflow:hidden;">
+          <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;display:flex;justify-content:space-between;align-items:center;">
+            <span>Notifications</span>
+            <a href="#" onclick="thMarkAllNotifRead(event)" style="font-size:11px;color:#0077B8;text-decoration:none;font-weight:600;">Mark all read</a>
+          </div>
+          <div id="thNotifList" style="max-height:340px;overflow-y:auto;"></div>
+          <a href="${dashUrl}" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">Go to Dashboard →</a>
+        </div>
       </div>
       <div id="thMsgWrap" style="position:relative;cursor:pointer;" onclick="thToggleMsg(event)" title="Messages">
         <i class="fa-solid fa-comment-dots" style="font-size:20px;color:#555;"></i>
@@ -159,12 +204,17 @@
           <a href="/html/chat.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Messages →</a>
         </div>
       </div>
-      <div class="th-profile-wrap">
+      <div class="th-profile-wrap" id="thProfWrap" onclick="thToggleProfile(event)">
         <div class="th-avatar" id="thAvatar">${user.name.charAt(0).toUpperCase()}</div>
-        <div class="th-prof-drop">
+        <div class="th-prof-drop" id="thProfDrop">
           <span class="th-drop-name">${user.name}</span>
-          <a href="${dashUrl}">Dashboard</a>
-          ${extraHtml}
+          ${profileLink}
+          <a href="${dashUrl}"><i class="fa-solid fa-gauge" style="width:16px;margin-right:6px;"></i>Dashboard</a>
+          <a href="/html/settings.html"><i class="fa-solid fa-gear" style="width:16px;margin-right:6px;"></i>Settings</a>
+          <button type="button" class="th-drop-item th-theme-toggle" onclick="thToggleDarkMode(event)">
+            <span><i class="fa-solid fa-moon" style="width:16px;margin-right:6px;"></i>Dark Mode</span>
+            <span class="th-switch"></span>
+          </button>
           <a href="#" class="th-logout" onclick="Auth.logout();return false;">Logout</a>
         </div>
       </div>
@@ -173,9 +223,18 @@
     thLoadAvatar(user);
     thPollNotif();  setInterval(thPollNotif, 20000);
     thPollMsg();    setInterval(thPollMsg,   20000);
-    document.addEventListener('click', () => {
-      const dd = document.getElementById('thMsgDrop');
-      if (dd) dd.style.display = 'none';
+
+    // Close any open dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const msg   = document.getElementById('thMsgWrap');
+      const notif = document.getElementById('thNotifWrap');
+      const prof  = document.getElementById('thProfWrap');
+      const msgDd   = document.getElementById('thMsgDrop');
+      const notifDd = document.getElementById('thNotifDrop');
+      const profDd  = document.getElementById('thProfDrop');
+      if (msgDd   && msg   && !msg.contains(e.target))   msgDd.style.display = 'none';
+      if (notifDd && notif && !notif.contains(e.target)) notifDd.style.display = 'none';
+      if (profDd  && prof  && !prof.contains(e.target))  profDd.classList.remove('open');
     });
   }
 
@@ -221,9 +280,129 @@
     e.stopPropagation();
     const dd = document.getElementById('thMsgDrop');
     if (!dd) return;
+    // Close others
+    const nd = document.getElementById('thNotifDrop'); if (nd) nd.style.display = 'none';
+    const pd = document.getElementById('thProfDrop');  if (pd) pd.classList.remove('open');
     if (dd.style.display === 'block') { dd.style.display = 'none'; return; }
     thLoadMsgDrop();
     dd.style.display = 'block';
+  };
+
+  // ── Notifications dropdown ────────────────────────────────────────
+  window.thToggleNotif = function (e) {
+    e.stopPropagation();
+    const dd = document.getElementById('thNotifDrop');
+    if (!dd) return;
+    // Close others
+    const md = document.getElementById('thMsgDrop');  if (md) md.style.display = 'none';
+    const pd = document.getElementById('thProfDrop'); if (pd) pd.classList.remove('open');
+    if (dd.style.display === 'block') { dd.style.display = 'none'; return; }
+    thLoadNotifDrop();
+    dd.style.display = 'block';
+  };
+
+  async function thLoadNotifDrop() {
+    const list = document.getElementById('thNotifList');
+    if (!list) return;
+    list.innerHTML = '<p style="padding:14px;text-align:center;color:#9ab;font-size:13px;">Loading…</p>';
+    try {
+      const res = await fetch('/api/notifications', { headers: { Authorization: 'Bearer ' + Auth.token() } });
+      const items = await res.json();
+      if (!Array.isArray(items) || !items.length) {
+        list.innerHTML = '<p style="padding:18px;text-align:center;color:#9ab;font-size:13px;">No notifications yet.</p>';
+        return;
+      }
+      list.innerHTML = items.slice(0, 12).map(n => {
+        const when = n.created_at ? thTimeAgo(n.created_at) : '';
+        const unread = !n.is_read;
+        return `
+          <div class="th-notif-item ${unread ? 'unread' : ''}"
+               onclick="thOpenNotif(${n.id}, '${(n.ref_type||'').replace(/'/g,'')}', ${n.ref_id||'null'})"
+               style="display:flex;gap:11px;padding:11px 16px;border-bottom:1px solid #f0f4f8;cursor:pointer;align-items:flex-start;">
+            <div style="width:32px;height:32px;border-radius:50%;background:#e0f0ff;color:#0077B8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fa-solid fa-bell" style="font-size:13px;"></i>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:${unread ? 700 : 500};color:#051923;line-height:1.35;">${thEsc(n.title||'')}</div>
+              <div style="font-size:12px;color:#6b7280;line-height:1.4;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${thEsc(n.body||'')}</div>
+              <div style="font-size:11px;color:#9ab;margin-top:3px;">${when}</div>
+            </div>
+            ${unread ? '<span style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0;margin-top:6px;"></span>' : ''}
+          </div>`;
+      }).join('');
+    } catch (_) {
+      list.innerHTML = '<p style="padding:14px;text-align:center;color:#e00;font-size:13px;">Failed to load</p>';
+    }
+  }
+
+  function thEsc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+  function thTimeAgo(ts) {
+    const t = new Date(ts.replace(' ', 'T') + (ts.endsWith('Z') ? '' : 'Z')).getTime();
+    if (isNaN(t)) return '';
+    const s = Math.max(1, Math.floor((Date.now() - t) / 1000));
+    if (s < 60)   return s + 's ago';
+    if (s < 3600) return Math.floor(s/60) + 'm ago';
+    if (s < 86400) return Math.floor(s/3600) + 'h ago';
+    return Math.floor(s/86400) + 'd ago';
+  }
+
+  window.thOpenNotif = async function (id, refType, refId) {
+    try {
+      await fetch('/api/notifications/' + id + '/read', {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + Auth.token() }
+      });
+    } catch (_) {}
+    // Best-effort: route based on ref_type
+    if (refType === 'post' && refId) {
+      window.location.href = '/html/work.html?post=' + refId;
+    } else if (refType === 'conversation' && refId) {
+      window.location.href = '/html/chat.html?type=proposal&id=' + refId;
+    } else if (refType === 'direct' && refId) {
+      window.location.href = '/html/chat.html?type=direct&id=' + refId;
+    } else {
+      thPollNotif();
+      thLoadNotifDrop();
+    }
+  };
+
+  window.thMarkAllNotifRead = async function (e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    try {
+      await fetch('/api/notifications/read-all', {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + Auth.token() }
+      });
+      thPollNotif();
+      thLoadNotifDrop();
+    } catch (_) {}
+  };
+
+  // ── Profile dropdown (click) ──────────────────────────────────────
+  window.thToggleProfile = function (e) {
+    e.stopPropagation();
+    const dd = document.getElementById('thProfDrop');
+    if (!dd) return;
+    // Close others
+    const md = document.getElementById('thMsgDrop');   if (md) md.style.display = 'none';
+    const nd = document.getElementById('thNotifDrop'); if (nd) nd.style.display = 'none';
+    dd.classList.toggle('open');
+  };
+
+  // ── Dark mode toggle ──────────────────────────────────────────────
+  window.thToggleDarkMode = function (e) {
+    if (e) e.stopPropagation();
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      try { localStorage.setItem('th-theme', 'light'); } catch (_) {}
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      try { localStorage.setItem('th-theme', 'dark'); } catch (_) {}
+    }
   };
 
   async function thLoadMsgDrop() {
@@ -337,7 +516,17 @@
             <div style="font-weight:700;color:#0077B8;font-size:24px;">${p.total_posts||0}</div>
           </div>
         </div>`;
-        if (p.description) html += `<p style="color:#374151;font-size:14px;line-height:1.65;">${p.description}</p>`;
+        if (p.description) html += `<p style="color:#374151;font-size:14px;line-height:1.65;margin-bottom:14px;">${thEsc(p.description)}</p>`;
+        if (p.recent_posts && p.recent_posts.length) {
+          html += `<div style="margin-bottom:12px;">
+            <div style="font-size:11px;font-weight:700;color:#6b7280;margin-bottom:8px;letter-spacing:.5px;">RECENT PROJECTS</div>
+            ${p.recent_posts.map(post => `
+              <div style="padding:10px 12px;background:#f8fafc;border-radius:8px;margin-bottom:6px;border-left:3px solid #0077B8;">
+                <div style="font-size:13px;font-weight:600;color:#051923;">${thEsc(post.title)}</div>
+                <div style="font-size:12px;color:#6b7280;margin-top:2px;">${post.category ? thEsc(post.category) : ''}${post.budget ? ' · $' + post.budget : ''}<span style="margin-left:8px;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;background:${post.status==='open'?'#dcfce7':'#f1f5f9'};color:${post.status==='open'?'#16a34a':'#64748b'};">${post.status||''}</span></div>
+              </div>`).join('')}
+          </div>`;
+        }
       }
 
       // Message button
