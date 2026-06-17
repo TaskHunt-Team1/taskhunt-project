@@ -6,8 +6,7 @@
  */
 
 (function () {
-  const API = 'http://localhost:3000/api';
-  const PAGE_CATEGORY = (window.PAGE_CONFIG && window.PAGE_CONFIG.category) || null;
+const API = 'https://taskhunt-project-production.up.railway.app/api';  const PAGE_CATEGORY = (window.PAGE_CONFIG && window.PAGE_CONFIG.category) || null;
   const BATCH = 9; // cards shown per load-more
 
   let allCards = [];   // cached freelancers from API

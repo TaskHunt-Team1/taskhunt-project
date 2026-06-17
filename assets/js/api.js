@@ -1,5 +1,4 @@
-const API = 'http://localhost:3000/api';
-
+const API = 'https://taskhunt-project-production.up.railway.app/api';
 // ─── Loading Overlay ─────────────────────────────────────────────
 (function injectLoader() {
   const style = document.createElement('style');
