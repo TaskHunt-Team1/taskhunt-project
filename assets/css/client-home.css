@@ -819,7 +819,7 @@ h3 {
 }
 
 /* موبايل وتجاوب */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .features-title { font-size: 28px; }
     .features-grid { grid-template-columns: 1fr; }
     .feature-card { padding: 35px 25px; }
