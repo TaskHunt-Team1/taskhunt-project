@@ -751,7 +751,7 @@ h3 {
 /* الكارت الاحترافي */
 .feature-card {
     background: var(--card-bg);
-    padding: 35px 25px;
+    padding: 45px 30px;
     border-radius: 24px;
     border: 1px solid rgba(0, 144, 224, 0.08); /* إطار خفيف جداً */
     text-align: center;
@@ -822,7 +822,7 @@ h3 {
 @media (max-width: 480px) {
     .features-title { font-size: 28px; }
     .features-grid { grid-template-columns: 1fr; }
-    .feature-card { padding: 35px 25px; }
+    .feature-card { padding: 30px 20px; }
 }
 
 /* TRUST SECTION */
