@@ -19,7 +19,16 @@
             --dark-blue: #2C3E50;
             --light-bg: #f8fafc;
         }
-
+:root {
+  --c1: #00A8FF;
+  --c2: #0090E0;
+  --c3: #0077B8;
+  --c4: #051923;
+  --c5: #ffffff;
+  --white: #ffffff;
+  --light: #e6f7ff;
+  
+}
         * {
             box-sizing: border-box;
             margin: 0;
@@ -260,6 +269,39 @@
             max-width: 540px;
             height: auto;
         }
+        
+/*Share Post */
+.share-post-section {
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 50px 0; 
+    clear: both;     
+}
+/*btn تنسيق  */
+.share-btn {
+    background-color: var(--c3); 
+    color: white;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease-in-out; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.share-btn:hover {
+    transform: translateY(-8px); 
+    background-color: var(--c2);  
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+}
 
         /* FILTER BAR */
         .filter-bar {
@@ -872,10 +914,10 @@
             </div>
         </div>
     </section>
- <div id="post-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:32px;border-radius:14px;width:92%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
-    </div>
-    </div>
+ <div class="share-post-section">
+    <button class="share-btn" id="open-post-modal-btn">
+      <i class="fa-solid fa-plus"></i> Post a Job</button>
+  </div>
     <div class="filter-bar">
         <div class="filter-container">
             <select id="typeFilter">
