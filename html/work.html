@@ -265,7 +265,7 @@
         .filter-bar {
             padding: 20px 20px 30px;
             display: flex;
-            justify-content: left;
+            justify-content: center;
         }
 
         .filter-container {
@@ -275,7 +275,7 @@
             display: flex;
             gap: 18px;
             flex-wrap: wrap;
-            justify-content: left;
+            justify-content: center;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
             border: 1px solid var(--border);
         }
@@ -872,7 +872,10 @@
             </div>
         </div>
     </section>
-
+ <div id="post-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:32px;border-radius:14px;width:92%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+    </div>
+    </div>
     <div class="filter-bar">
         <div class="filter-container">
             <select id="typeFilter">
