@@ -8,47 +8,109 @@
       --white: #ffffff;
       --light: #e6f7ff;
     }
-   /* NAVBAR */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 30px;
-      height: 50px;
-      background: var(--white);
-    }
-    .logo img {
-      height: 38px;
-      width: auto;
-      display: block;
-      object-fit: contain;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-    }
-    nav ul li a {
-      color: var(--c4);
-      text-decoration: none;
-      font-size: 18px;
-      transition: 0.3s;
-    }
-    nav ul li a:hover {
-      color: var(--c1);
-    }
+  /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 5%;
+            /* عشان ميبقاش لازق في الجوانب */
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
-body {
-  background: #f7f8fc;
-  color: #333;
-  line-height: 1.6;
-}
+            /* أمان إضافي */
+            box-sizing: border-box;
+            overflow: hidden;
+            /* يمنع أي حاجة بداخل الناف بار إنها تمطه */
+        }
 
-.container {
-  width: 80%;
-  margin: auto;
-  padding: 60px 0;
-}
+        .logo {
+            height: 100%;
+            /* خلي حاوية اللوجو تاخد طول الناف بار */
+            display: flex;
+            align-items: center;
+            /* سنتر اللوجو عمودياً */
+        }
+
+        .logo a {
+            display: flex;
+            /* يمنع وجود مسافات غريبة تحت اللينك */
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 42px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #007bff;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+
+        .login {
+            background: #f0f6ff;
+            color: #0077B8;
+        }
+
+        .login:hover {
+            background: #e0edff;
+        }
+
+        .signup {
+            background: #0077B8;
+            color: white;
+        }
+
+        .signup:hover {
+            background: #0077B8;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 26px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .mobile-auth {
+            display: none;
+        }
 
 /* Hero */
 .hero {
