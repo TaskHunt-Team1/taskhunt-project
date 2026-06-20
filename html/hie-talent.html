@@ -28,51 +28,54 @@
             color: var(--text);
             overflow-x: hidden;
         }
- /* ===== NAVBAR ===== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;         
-    padding: 0 5%;        /* عشان ميبقاش لازق في الجوانب */
-    background: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    
-    /* أمان إضافي */
-    box-sizing: border-box;
-    overflow: hidden;    /* يمنع أي حاجة بداخل الناف بار إنها تمطه */
-}
+/* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            padding: 0 5%;
+            /* عشان ميبقاش لازق في الجوانب */
+            background: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
-.logo {
-    height: 100%;        /* خلي حاوية اللوجو تاخد طول الناف بار */
-    display: flex;
-    align-items: center; /* سنتر اللوجو عمودياً */
-}
+            /* أمان إضافي */
+            box-sizing: border-box;
+            overflow: hidden;
+            /* يمنع أي حاجة بداخل الناف بار إنها تمطه */
+        }
 
-.logo a {
-    display: flex;       /* يمنع وجود مسافات غريبة تحت اللينك */
-    align-items: center;
-    height: 100%;
-}
+        .logo {
+            height: 100%;
+            /* خلي حاوية اللوجو تاخد طول الناف بار */
+            display: flex;
+            align-items: center;
+            /* سنتر اللوجو عمودياً */
+        }
 
-.logo img {
-    
-    height: 145px;    
-    width: auto;         
-    display: block;
-    object-fit: contain;
-    margin-right: 50px;
-    margin-bottom: 25px;
-}
- .nav-links {
+        .logo a {
+            display: flex;
+            /* يمنع وجود مسافات غريبة تحت اللينك */
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 42px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav-links {
             display: flex;
             list-style: none;
             gap: 30px;
             margin: 0;
             padding: 0;
-         }
+        }
 
-    .nav-links li a {
+        .nav-links li a {
             text-decoration: none;
             color: #333;
             font-size: 16px;
@@ -102,7 +105,7 @@
 
         .login {
             background: #f0f6ff;
-            color:#0077B8;
+            color: #0077B8;
         }
 
         .login:hover {
@@ -128,6 +131,9 @@
         .mobile-auth {
             display: none;
         }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
         /* HERO SECTION */
         .hero-section {
@@ -710,47 +716,58 @@
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="logo">
-        <a href="home.html">
-            <img src="../assets/images/logo.png" ">
-        </a>
-    </div>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="work.html">Find Work</a></li>
-        <li><a href="hie-talent.html">Hire Talent</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#contact-section">Contact</a></li>
-        <li class="mobile-auth">
-            <button onclick="location.href='login.html'" class="btn login">Login</button>
-            <button onclick="location.href='signup/ask-signup.html'" class="btn signup">Sign Up</button>
-        </li>
-    </ul>
-    <div class="auth-buttons">
-        <button id="nav-login" onclick="location.href='login.html'" class="btn login">Login</button>
-        <button id="nav-signup" onclick="location.href='signup/ask-signup.html'" class="btn signup">Sign Up</button>
-        <div id="nav-user" style="display:none;align-items:center;gap:14px;">
-            <!-- Bell -->
-            <div style="position:relative;cursor:pointer;" onclick="window.location.href='dashboard/dash-client.html'">
-              <i class="fa-solid fa-bell" style="font-size:20px;color:#555;"></i>
-              <span id="notifCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
-            </div>
-            <!-- Messages -->
-            <div id="msgIconWrap" style="position:relative;cursor:pointer;" onclick="toggleMsgDropdown(event)">
-              <i class="fa-solid fa-comment-dots" style="font-size:20px;color:#555;"></i>
-              <span id="msgCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#22c55e;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
-              <div id="msgDropdown" style="display:none;position:absolute;top:40px;right:-10px;width:300px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
-                <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">Messages</div>
-                <div id="msgDropList" style="max-height:280px;overflow-y:auto;"></div>
-                <a href="chat.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Messages →</a>
-              </div>
-            </div>
-            <span id="nav-username" style="font-weight:600;color:#0077B8;"></span>
-            <button class="btn login" onclick="Auth.logout()">Logout</button>
+<!-- NAVBAR -->
+   <nav class="navbar">
+        <!-- LOGO -->
+        <div class="logo">
+            <a href="../index.html">
+                <img src="../assets/images/logo.png" alt="TaskHunt Logo">
+            </a>
         </div>
-    </div>
-    <div class="menu-toggle" id="menuToggle">☰</div>
-</nav>
+
+        <!-- LINKS -->
+        <ul class="nav-links" id="navLinks">
+            <li><a href="work.html">Find Work</a></li>
+            <li><a href="hie-talent.html">Hire Talent</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact-us.html">Contact</a></li>
+
+            <!-- MOBILE BUTTONS -->
+            <li class="mobile-auth">
+                <button onclick="location.href='../../login/login.html'" class="btn login">Login</button>
+                <button onclick="location.href='../../signup/asksignup.html'" class="btn signup">Sign Up</button>
+            </li>
+        </ul>
+
+        <!-- DESKTOP BUTTONS -->
+        <div class="auth-buttons">
+            <button id="nav-login" onclick="location.href='login.html'" class="btn login">Login</button>
+            <button id="nav-signup" onclick="location.href='signup/ask-signup.html'" class="btn signup">Sign Up</button>
+            <div id="nav-user" style="display:none;align-items:center;gap:14px;">
+                <!-- Bell -->
+                <div style="position:relative;cursor:pointer;" onclick="window.location.href='dashboard/freelancer.html'">
+                  <i class="fa-solid fa-bell" style="font-size:20px;color:#555;"></i>
+                  <span id="notifCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
+                </div>
+                <!-- Messages -->
+                <div id="msgIconWrap" style="position:relative;cursor:pointer;" onclick="toggleMsgDropdown(event)">
+                  <i class="fa-solid fa-comment-dots" style="font-size:20px;color:#555;"></i>
+                  <span id="msgCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#22c55e;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
+                  <div id="msgDropdown" style="display:none;position:absolute;top:40px;right:-10px;width:300px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
+                    <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">Messages</div>
+                    <div id="msgDropList" style="max-height:280px;overflow-y:auto;"></div>
+                    <a href="chat.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Messages →</a>
+                  </div>
+                </div>
+                <span id="nav-username" style="font-weight:600;color:#0077B8;"></span>
+                <button class="btn login" onclick="Auth.logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- MENU ICON -->
+        <div class="menu-toggle" id="menuToggle">☰</div>
+    </nav>
+
 
 <section class="hero-section">
     <div class="hero-wrapper">
@@ -951,6 +968,9 @@
         const loadBtn = document.getElementById("loadMoreBtn");
         if (loadBtn) loadBtn.style.display = visibleCount >= filteredList.length ? "none" : "block";
     }
+
+
+    
 
     function filterAndRender() {
         const typeVal   = document.getElementById("typeFilter").value;
