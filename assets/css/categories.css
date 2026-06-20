@@ -19,113 +19,93 @@ i* {
             margin: 0;
         }
 
-/* ===== NAVBAR ===== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-            padding: 0 5%;
-            /* عشان ميبقاش لازق في الجوانب */
-            background: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+ /* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+  height: 50px;
+  background: #ffffff;
+}
+/* NAVBAR FIX */
 
-            /* أمان إضافي */
-            box-sizing: border-box;
-            overflow: hidden;
-            /* يمنع أي حاجة بداخل الناف بار إنها تمطه */
-        }
+.logo img {
+  height: 38px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+nav ul li a {
+  color: var(--c4);
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+nav ul li a:hover {
+  color: var(--c3);
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+}
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+/* BUTTONS */
 
-        .logo {
-            height: 100%;
-            /* خلي حاوية اللوجو تاخد طول الناف بار */
-            display: flex;
-            align-items: center;
-            /* سنتر اللوجو عمودياً */
-        }
+.auth-buttons .btn {
+    width: 90px; 
+    height: 35px;
+    padding: 8px 0; 
+    text-align: center;
+    display: inline-block;
+    border-radius: 8px; 
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.login-blue {
+    background-color: #f0f6ff;
+    color: white;
+    border: none;
+}
+/* LOGIN BUTTON */
 
-        .logo a {
-            display: flex;
-            /* يمنع وجود مسافات غريبة تحت اللينك */
-            align-items: center;
-            height: 100%;
-        }
+.login-btn {
+    background-color: transparent;
+    color: var(--c3);
+    
+}
+.auth-buttons .btn:hover {
+    opacity: 0.8;
+    transform: translateY(-0.5px);
+}
+.signup-blue {
+  background-color: var(--c3);
+  color: white;
+}
 
-        .logo img {
-            height: 42px;
-            width: auto;
-            display: block;
-            object-fit: contain;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-links li a {
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links li a:hover {
-            color: #007bff;
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 18px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-
-        .login {
-            background: #f0f6ff;
-            color: #0077B8;
-        }
-
-        .login:hover {
-            background: #e0edff;
-        }
-
-        .signup {
-            background: #0077B8;
-            color: white;
-        }
-
-        .signup:hover {
-            background: #0077B8;
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 26px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .mobile-auth {
-            display: none;
-        }
-
+/* BUTTONS */
+.btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
 
         /* ===== HERO ===== */
         .hero-title {
