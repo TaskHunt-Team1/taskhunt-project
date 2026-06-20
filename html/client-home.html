@@ -100,83 +100,11 @@
 
   <div class="share-post-section">
     <button class="share-btn" id="open-post-modal-btn">
-      <i class="fa-solid fa-plus"></i> Post a Job
+      <i class="fa-solid fa-plus"></i> view all jobs
     </button>
   </div>
 
-  <!-- ══════════ POST MODAL ══════════ -->
-  <div id="post-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
-    <div style="background:#fff;padding:32px;border-radius:14px;width:92%;max-width:500px;box-shadow:0 20px 60px rgba(0,0,0,.2);">
-
-      <!-- FORM VIEW -->
-      <div id="modal-form-view">
-        <h3 style="margin-bottom:20px;color:#051923;">Post a New Job</h3>
-        <form id="post-form">
-          <input id="p-title" type="text" placeholder="Job Title" required
-            style="width:100%;padding:11px 14px;margin-bottom:12px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;box-sizing:border-box;">
-          <textarea id="p-desc" placeholder="Describe the job in detail..." required
-            style="width:100%;padding:11px 14px;margin-bottom:12px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;height:110px;resize:vertical;box-sizing:border-box;"></textarea>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-            <input id="p-budget" type="number" placeholder="Budget ($)" min="0"
-              style="padding:11px 14px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;">
-            <select id="p-category" style="padding:11px 14px;border:1.5px solid #dde3ea;border-radius:8px;font-size:14px;">
-              <option value="General">General</option>
-              <option value="Design & Creative">Design & Creative</option>
-              <option value="Development & IT">Development & IT</option>
-              <option value="Data & AI">Data & AI</option>
-              <option value="Sales & Marketing">Sales & Marketing</option>
-              <option value="Writing & Translation">Writing & Translation</option>
-              <option value="Admin & Support">Admin & Support</option>
-              <option value="Engineering & Architecture">Engineering & Architecture</option>
-            </select>
-          </div>
-          <p id="post-error" style="color:#e53e3e;font-size:13px;margin-bottom:10px;display:none;"></p>
-          <div style="display:flex;gap:10px;">
-            <button type="submit" id="post-submit-btn"
-              style="flex:1;padding:12px;background:#0090E0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:15px;">Publish Job</button>
-            <button type="button" onclick="closePostModal()"
-              style="flex:1;padding:12px;background:#f0f2f5;border:none;border-radius:8px;cursor:pointer;font-size:15px;">Cancel</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- PROGRESS VIEW -->
-      <div id="modal-progress-view" style="display:none;text-align:center;padding:10px 0;">
-        <div id="prog-icon" style="font-size:48px;margin-bottom:16px;">📤</div>
-        <h3 id="prog-title" style="color:#051923;margin-bottom:8px;">Publishing your job...</h3>
-        <p id="prog-subtitle" style="color:#888;font-size:14px;margin-bottom:24px;">Please wait a moment</p>
-
-        <!-- Progress bar -->
-        <div style="background:#eef2f7;border-radius:99px;height:10px;overflow:hidden;margin-bottom:10px;">
-          <div id="prog-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#0090E0,#00C8FF);border-radius:99px;transition:width .4s ease;"></div>
-        </div>
-        <p id="prog-percent" style="font-size:13px;color:#0090E0;font-weight:600;margin-bottom:24px;">0%</p>
-
-        <!-- Steps -->
-        <div style="text-align:left;background:#f8fafc;border-radius:10px;padding:14px 18px;margin-bottom:24px;">
-          <div id="step-1" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#bbb;font-size:13px;">
-            <span class="step-dot">○</span> Validating data
-          </div>
-          <div id="step-2" style="display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#bbb;font-size:13px;">
-            <span class="step-dot">○</span> Saving to database
-          </div>
-          <div id="step-3" style="display:flex;align-items:center;gap:10px;color:#bbb;font-size:13px;">
-            <span class="step-dot">○</span> Publishing post
-          </div>
-        </div>
-
-        <!-- View post button (hidden until done) -->
-        <a id="view-post-btn" href="#" style="display:none;">
-          <button style="padding:12px 32px;background:#0090E0;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:15px;width:100%;">
-            View Post →
-          </button>
-        </a>
-        <button id="prog-close-btn" onclick="closePostModal()" style="display:none;margin-top:10px;padding:10px 24px;background:#f0f2f5;border:none;border-radius:8px;cursor:pointer;width:100%;">Close</button>
-      </div>
-
-    </div>
-  </div>
-
+  
   <!-- ===== CLIENT TESTIMONIALS ===== -->
   <section class="testimonials-section">
 
@@ -732,21 +660,15 @@ async function loadMsgDropdown() {
   } catch(_) { document.getElementById('msgDropList').innerHTML = '<p style="padding:14px;text-align:center;color:#e00;font-size:13px;">Failed to load</p>'; }
 }
 
-// ── Post modal ───────────────────────────────────────────
-document.getElementById('open-post-modal-btn').onclick = () => openPostModal();
-document.getElementById('nav-post-btn').onclick        = (e) => { e.preventDefault(); openPostModal(); };
+// ── view all jobs ───────────────────────────────────────────
+document.getElementById('open-post-modal-btn').onclick = () => {
+    window.location.href = 'html/work.html';
+};
 
-function openPostModal() {
-  document.getElementById('post-modal').style.display  = 'flex';
-  document.getElementById('modal-form-view').style.display     = 'block';
-  document.getElementById('modal-progress-view').style.display = 'none';
-  document.getElementById('post-form').reset();
-  document.getElementById('post-error').style.display = 'none';
-}
-function closePostModal() {
-  document.getElementById('post-modal').style.display = 'none';
-}
-
+document.getElementById('nav-post-btn').onclick = (e) => {
+    e.preventDefault();
+    window.location.href = 'html/work.html';
+};
 // ── Progress animation ────────────────────────────────────
 async function runProgress(postId) {
   document.getElementById('modal-form-view').style.display     = 'none';
