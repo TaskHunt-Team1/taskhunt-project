@@ -73,7 +73,7 @@ const Auth = {
   token()   { return localStorage.getItem('token'); },
   user()    { const u = localStorage.getItem('user'); return u ? JSON.parse(u) : null; },
   isLoggedIn() { return !!this.token(); },
-  logout()  { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = '/html/login.html'; }
+  logout()  { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = '/html/home.html'; }
 };
 
 // ─── Base fetch wrapper ──────────────────────────────────────────
