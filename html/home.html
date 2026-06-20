@@ -51,10 +51,8 @@
             <button class="search-btn">Search</button>
           </div>
           <div class="quick-actions">
-
-
-          <a href="hie-talent.html"><button class="action-btn blue">Hire Talent</button></a> 
-           <a href="work.html"><button class="action-btn outline">Find Work</button></a> 
+<button class="action-btn blue" id="hireBtn">Hire Talent</button>
+<button class="action-btn outline" id="workBtn">Find Work</button>
           </div>
         </div>
       </div>
@@ -505,6 +503,15 @@
 
 <script src="../assets/js/api.js"></script>
 <script src="/assets/js/navbar.js"></script>
+<script>
+document.getElementById("hireBtn").addEventListener("click", function () {
+    window.location.href = "/html/hie-talent.html";
+});
+
+document.getElementById("workBtn").addEventListener("click", function () {
+    window.location.href = "/html/work.html";
+});
+</script>
 <script>
   // Update nav buttons based on login state
   const user = Auth.user();

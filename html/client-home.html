@@ -75,9 +75,8 @@
             <input type="text" placeholder="Look for a skill, a programming language...">
             <button class="search-btn">Search</button>
           </div>
-          <div class="quick-actions">
-            <button class="action-btn blue">Hire Talent</button>
-            <button class="action-btn outline">Find Work</button>
+          <div class="quick-actions"><button class="action-btn blue" id="hireBtn">Hire Talent</button>
+<button class="action-btn outline" id="workBtn">Find Work</button>
           </div>
         </div>
       </div>
@@ -452,6 +451,15 @@
 
 <script src="../assets/js/api.js"></script>
 <script src="/assets/js/navbar.js"></script>
+<script>
+document.getElementById("hireBtn").addEventListener("click", function () {
+    window.location.href = "/html/hie-talent.html";
+});
+
+document.getElementById("workBtn").addEventListener("click", function () {
+    window.location.href = "/html/work.html";
+});
+</script>
 <script>
 // ── Auth guard ──────────────────────────────────────────
 const user = Auth.user();
