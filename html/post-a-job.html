@@ -865,11 +865,7 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed');
 
-        const me = Auth.user();
-        allPosts.unshift({ ...payload, author_name: me?.name || 'You', author_avatar: null, created_at: new Date().toISOString(), user_id: me?.id });
-        applyFilters();
-        modal.classList.remove('open');
-        postForm.reset();
+        window.location.href = 'work.html';
       } catch (err) {
         alert('Error: ' + err.message);
       } finally {
