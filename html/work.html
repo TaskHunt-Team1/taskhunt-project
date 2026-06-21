@@ -1015,7 +1015,7 @@
 
     <div class="cta-fixed" id="ctaFixed">
         <p>Don't see the right job?</p>
-       <a href="../html/signup/ask-signup.html"><button id="ctaCreateProfileBtn" id="createProfileLink">Create Profile</button></a> 
+       <a href="../html/signup/ask-signup.html"><button id="ctaCreateProfileBtn">Create Profile</button></a> 
     </div>
 
     <!-- ===== FOOTER ===== -->
@@ -1258,6 +1258,9 @@
     if (Auth.isLoggedIn()) {
       const link = document.getElementById('createProfileLink');
       if (link) link.style.display = 'none';
+
+      const cta = document.getElementById('ctaFixed');
+      if (cta) cta.style.display = 'none';
     }
   });
 </script>
