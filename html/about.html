@@ -68,9 +68,9 @@
     
     <h1>Where freelancers work together as one team</h1>
     <p>We connect talents, build teams, and turn ideas into real projects.</p>
-    <a href="../Home/index.html" class="btn">Start Collaborating</a>
-  </section>
-
+<a href="#" class="btn" id="startCollaboratingBtn">
+    Start Collaborating
+</a>
   <!-- About Us -->
   <section class="about container">
     <h2>About Us</h2>
@@ -231,5 +231,58 @@ document.getElementById('nav-user-name').textContent     = user ? user.name : ''
 
 <script src="/assets/js/api.js"></script>
 <script src="/assets/js/navbar.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const user = Auth.user();
+
+    // عرض اسم المستخدم في الناف بار
+    if (user) {
+        const initials = user.name
+            .split(' ')
+            .map(w => w[0])
+            .join('')
+            .slice(0, 2)
+            .toUpperCase();
+
+        const avatar = document.getElementById('nav-avatar-circle');
+        const userName = document.getElementById('nav-user-name');
+
+        if (avatar) avatar.textContent = initials;
+        if (userName) userName.textContent = user.name;
+    }
+
+    // زرار Start Collaborating
+    const startBtn = document.getElementById('startCollaboratingBtn');
+
+    if (startBtn) {
+        startBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // لو مش مسجل دخول
+            if (!Auth.isLoggedIn()) {
+                window.location.href = 'signup/ask-signup.html';
+                return;
+            }
+
+            const user = Auth.user();
+
+            // Client
+            if (user.role === 'client') {
+                window.location.href = 'post-a-job.html';
+            }
+            // Freelancer
+            else if (user.role === 'freelancer') {
+                window.location.href = 'work.html';
+            }
+            // أي Role تاني
+            else {
+                window.location.href = 'home.html';
+            }
+        });
+    }
+
+});
+</script>
 </body>
 </html>
