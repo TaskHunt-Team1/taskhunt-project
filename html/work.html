@@ -914,8 +914,7 @@
             </div>
         </div>
     </section>
- <div class="share-post-section">
-    <button class="share-btn" id="open-post-modal-btn">
+<div class="share-post-section" id="postJobSection">    <button class="share-btn" id="open-post-modal-btn">
       <i class="fa-solid fa-plus"></i> Post a Job</button>
   </div>
     <div class="filter-bar">
@@ -1255,13 +1254,21 @@
 <script src="/assets/js/navbar.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+
+    const postJobSection = document.getElementById('postJobSection');
+
     if (Auth.isLoggedIn()) {
       const link = document.getElementById('createProfileLink');
       if (link) link.style.display = 'none';
 
       const cta = document.getElementById('ctaFixed');
       if (cta) cta.style.display = 'none';
+
+      if (postJobSection) postJobSection.style.display = 'flex';
+    } else {
+      if (postJobSection) postJobSection.style.display = 'none';
     }
+
   });
 </script>
 <script>
