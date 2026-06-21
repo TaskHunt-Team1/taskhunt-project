@@ -308,7 +308,7 @@
 
 
     <!-- CTA -->
-    <section class="cta">
+    <section class="cta" id="joinCta">
       <h2>Ready to get started?</h2>
       <br><br>
       <a href="signup/ask-signup.html">
@@ -379,6 +379,12 @@
 <script src="../assets/js/api.js"></script>
 <script src="/assets/js/navbar.js"></script>
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (Auth.isLoggedIn()) {
+        const joinCta = document.getElementById('joinCta');
+        if (joinCta) joinCta.style.display = 'none';
+    }
+});
 document.getElementById("hireBtn").addEventListener("click", function () {
     window.location.href = "/html/hie-talent.html";
 });
