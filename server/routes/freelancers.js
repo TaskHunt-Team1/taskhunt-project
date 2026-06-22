@@ -39,7 +39,10 @@ router.get('/', (req, res) => {
 
 // GET /api/freelancers/categories — list of distinct categories
 router.get('/categories', (_, res) => {
-  res.json(db.prepare("SELECT DISTINCT category FROM freelancers ORDER BY category").all().map(r => r.category));
+  res.json(
+    db.prepare(
+      "SELECT DISTINCT category FROM freelancer_profiles WHERE category IS NOT NULL ORDER BY category"
+    ).all().map(r => r.category)
+  );
 });
-
 module.exports = router;
