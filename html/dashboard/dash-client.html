@@ -149,8 +149,10 @@ const notifIcon = { proposal_received:'📩', proposal_accepted:'🎉', proposal
 async function loadNotifications() {
   const list = document.getElementById('notifList');
   try {
-    const notifs = await get('/notifications');
-    const badge  = document.getElementById('notifBadge');
+   const list = document.getElementById('notifDropList');
+const badge = document.getElementById('notifCount');
+
+if (!list || !badge) return;
     const unread = notifs.filter(n => !n.is_read).length;
     badge.textContent = unread > 9 ? '9+' : unread;
     badge.style.display = unread > 0 ? 'flex' : 'none';
