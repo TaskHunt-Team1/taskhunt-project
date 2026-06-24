@@ -126,18 +126,20 @@ if (avatar) avatar.textContent = ini;
 // ── Notifications ────────────────────────────────────────────────
 let notifOpen = false;
 
-function toggleNotifDrop() {
-  notifOpen = !notifOpen;
-  document.getElementById('notifDrop').classList.toggle('open', notifOpen);
-  if (notifOpen) loadNotifications();
-}
-document.addEventListener('click', e => {
-  if (!document.getElementById('notifBell').contains(e.target)) {
-    notifOpen = false;
-    document.getElementById('notifDrop').classList.remove('open');
-  }
-});
+function toggleNotifDropdown(event) {
+  event.stopPropagation();
 
+  const dropdown = document.getElementById('notifDropdown');
+  if (!dropdown) return;
+
+  dropdown.style.display =
+    dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+document.addEventListener('click', () => {
+  const dropdown = document.getElementById('notifDropdown');
+  if (dropdown) dropdown.style.display = 'none';
+});
 function timeAgo(d) {
   const diff = Date.now() - new Date(d);
   const m = Math.floor(diff/60000), h = Math.floor(m/60), day = Math.floor(h/24);
@@ -147,7 +149,6 @@ function timeAgo(d) {
 const notifIcon = { proposal_received:'📩', proposal_accepted:'🎉', proposal_rejected:'❌', new_message:'💬' };
 
 async function loadNotifications() {
-  const list = document.getElementById('notifList');
   try {
    const list = document.getElementById('notifDropList');
 const badge = document.getElementById('notifCount');
@@ -185,8 +186,8 @@ async function markAllRead(e) {
 async function pollNotifCount() {
   try {
     const data = await get('/notifications/unread-count');
-    const badge = document.getElementById('notifBadge');
-    badge.textContent = data.count > 9 ? '9+' : data.count;
+const badge = document.getElementById('notifCount');
+if (!badge) return;    badge.textContent = data.count > 9 ? '9+' : data.count;
     badge.style.display = data.count > 0 ? 'flex' : 'none';
   } catch(_) {}
 }
@@ -194,8 +195,11 @@ async function pollNotifCount() {
 // ── Posts & Proposals ────────────────────────────────────────────
 async function loadDashboard() {
   try {
-    const posts = await getPosts(`user_id=${me.id}&status=all&limit=100`);
-    const convs = await get('/chat/conversations');
+console.log('USER:', me);
+
+const posts = await getPosts(`user_id=${me.id}&status=all&limit=100`);
+
+console.log('POSTS:', posts);    const convs = await get('/chat/conversations');
 
     // Stats
     document.getElementById('statTotal').textContent     = posts.length;
@@ -340,8 +344,8 @@ async function goToChat(proposalId) {
 
 // ── Init ────────────────────────────────────────────────────────
 loadDashboard();
-loadNotifications();
-setInterval(pollNotifCount, 15000);
+// loadNotifications();
+// setInterval(pollNotifCount, 15000);
 </script>
 </body>
 </html>
