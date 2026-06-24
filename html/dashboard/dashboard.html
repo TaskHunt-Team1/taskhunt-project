@@ -810,14 +810,34 @@
             }
         }
 
-        function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                users = users.filter(u => u.id !== id);
-                updateStats();
-                showToast('User deleted successfully');
-                renderCurrentPage();
+     async function deleteUser(id) {
+    if (!confirm('Delete this user?')) return;
+
+    try {
+        const token = localStorage.getItem('token');
+
+        const res = await fetch(`${API}/admin/users/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
             }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || 'Delete failed');
         }
+
+        users = users.filter(u => u.id !== id);
+        showToast('User deleted successfully');
+        renderCurrentPage();
+
+    } catch (err) {
+        showToast(err.message, 'error');
+        console.error(err);
+    }
+}
 
         function toggleUserStatus(id) {
             const user = users.find(u => u.id === id);
@@ -845,14 +865,34 @@
                 renderCurrentPage();
             }
         }
+async function deleteJob(id) {
+    if (!confirm('Delete this job?')) return;
 
-        function deleteJob(id) {
-            if (confirm('Delete this job?')) {
-                jobs = jobs.filter(j => j.id !== id);
-                showToast('Job deleted');
-                renderCurrentPage();
+    try {
+        const token = localStorage.getItem('token');
+
+        const res = await fetch(`${API}/admin/posts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
             }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || 'Delete failed');
         }
+
+        jobs = jobs.filter(j => j.id !== id);
+        showToast('Job deleted successfully');
+        renderCurrentPage();
+
+    } catch (err) {
+        showToast(err.message, 'error');
+        console.error(err);
+    }
+}
 
         function approveWithdraw(id) {
             withdrawRequests = withdrawRequests.filter(w => w.id !== id);
