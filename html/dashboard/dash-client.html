@@ -374,18 +374,7 @@ async function deleteMyPost(id) {
 }
 
 async function editPost(id) {
-  const title = prompt('Enter new title');
-
-  if (!title) return;
-
-  try {
-    await updatePost(id, { title });
-
-    alert('Post updated successfully');
-    loadDashboard();
-  } catch (e) {
-    alert(e.message);
-  }
+  window.location.href = `../post-job.html?edit=${id}`;
 }
 // ── Init ─────────────────────────────
 loadDashboard();

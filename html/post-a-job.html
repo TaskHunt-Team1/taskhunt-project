@@ -842,6 +842,22 @@
     });
 
     // Submit new post
+    const params = new URLSearchParams(window.location.search);
+const editId = params.get('edit');
+
+if (editId) {
+  getPost(editId).then(post => {
+    document.getElementById('postTitle').value = post.title || '';
+    document.getElementById('postContent').value = post.description || '';
+    document.getElementById('postBudget').value = post.budget || '';
+    document.getElementById('postTags').value = post.category || '';
+
+    document.querySelector('.btn-submit-post').innerHTML =
+      '<i class="fas fa-save"></i> Save Changes';
+
+    modal.classList.add('open');
+  });
+}
     postForm.onsubmit = async e => {
       e.preventDefault();
       const btn = postForm.querySelector('.btn-submit-post');
@@ -856,12 +872,17 @@
         post_type:   document.getElementById('postType').value === 'freelancer' ? 'service' : 'job'
       };
 
-      try {
-        const res  = await fetch('/api/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.token() },
-          body: JSON.stringify(payload)
-        });
+     const url = editId ? `/api/posts/${editId}` : '/api/posts';
+const method = editId ? 'PUT' : 'POST';
+
+const res = await fetch(url, {
+  method,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + Auth.token()
+  },
+  body: JSON.stringify(payload)
+});
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed');
 
