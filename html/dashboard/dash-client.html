@@ -211,7 +211,7 @@ console.log('POSTS:', posts);    const convs = await get('/chat/conversations');
     // Posts
     const container = document.getElementById('postsContainer');
     if (!posts.length) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No posts yet. <a href="../client-home.html" style="color:#0077B8;">Post your first job →</a></p></div>';
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No posts yet. <a href="../post-a-job.html" style="color:#0077B8;">Post your first job →</a></p></div>';
     } else {
       container.innerHTML = posts.map(p => `
         <div class="post-row" id="post-${p.id}">
