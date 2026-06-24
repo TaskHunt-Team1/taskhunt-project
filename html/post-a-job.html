@@ -872,17 +872,33 @@ if (editId) {
         post_type:   document.getElementById('postType').value === 'freelancer' ? 'service' : 'job'
       };
 
-     const url = editId ? `/api/posts/${editId}` : '/api/posts';
-const method = editId ? 'PUT' : 'POST';
+     try {
 
-const res = await fetch(url, {
-  method,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + Auth.token()
-  },
-  body: JSON.stringify(payload)
-});
+  const url = editId ? `/api/posts/${editId}` : '/api/posts';
+  const method = editId ? 'PUT' : 'POST';
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + Auth.token()
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed');
+  }
+
+  alert(editId ? 'Post updated successfully' : 'Post created successfully');
+
+  window.location.href = 'work.html';
+
+} catch (err) {
+  alert('Error: ' + err.message);
+}
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed');
 
