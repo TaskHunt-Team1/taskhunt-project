@@ -121,8 +121,8 @@ if (me && me.role !== 'client') window.location.href = '../freelancers-home.html
 
 // Nav avatar
 const ini = me ? me.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?';
-document.getElementById('navAvatar').textContent = ini;
-
+const avatar = document.getElementById('nav-avatar-circle');
+if (avatar) avatar.textContent = ini;
 // ── Notifications ────────────────────────────────────────────────
 let notifOpen = false;
 
