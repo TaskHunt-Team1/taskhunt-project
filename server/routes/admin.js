@@ -74,4 +74,40 @@ router.delete('/accounts/:id', requireAdmin, (req, res) => {
   res.json({ message: 'Admin deleted successfully' });
 });
 
+router.delete('/posts/:id', requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id);
+
+  db.prepare('DELETE FROM proposals WHERE post_id = ?').run(id);
+  db.prepare('DELETE FROM conversations WHERE post_id = ?').run(id);
+
+  const result = db.prepare(
+    'DELETE FROM posts WHERE id = ?'
+  ).run(id);
+
+  if (!result.changes) {
+    return res.status(404).json({ error: 'Post not found' });
+  }
+
+  res.json({ message: 'Post deleted successfully' });
+}); 
+router.delete('/users/:id', requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id);
+
+  db.prepare('DELETE FROM notifications WHERE user_id = ?').run(id);
+  db.prepare('DELETE FROM freelancer_profiles WHERE user_id = ?').run(id);
+  db.prepare('DELETE FROM client_profiles WHERE user_id = ?').run(id);
+
+  db.prepare('DELETE FROM proposals WHERE user_id = ?').run(id);
+  db.prepare('DELETE FROM posts WHERE user_id = ?').run(id);
+
+  const result = db.prepare(
+    'DELETE FROM users WHERE id = ?'
+  ).run(id);
+
+  if (!result.changes) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.json({ message: 'User deleted successfully' });
+});
 module.exports = router;
