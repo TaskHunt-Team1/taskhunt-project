@@ -43,13 +43,19 @@ router.get('/:id', (req, res) => {
 
 // POST /api/posts — create post (any logged-in user)
 router.post('/', requireAuth, (req, res) => {
-  const { title, description, budget, category, post_type } = req.body;
-  if (!title || !description)
+const {
+  title,
+  description,
+  budget,
+  category,
+  sub_category,
+  post_type
+} = req.body;  if (!title || !description)
     return res.status(400).json({ error: 'Title and description are required' });
 
   const result = db.prepare(
-    'INSERT INTO posts (title, description, budget, category, post_type, user_id) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(title, description, budget || 0, category || 'General', post_type || 'job', req.user.id);
+    'INSERT INTO posts (title, description, budget, category, sub_category, post_type, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(title, description, budget || 0, category || 'General', sub_category || null, post_type || 'job', req.user.id);
 
   res.status(201).json({ message: 'Post created', id: result.lastInsertRowid });
 });
@@ -60,16 +66,33 @@ router.put('/:id', requireAuth, (req, res) => {
   if (!post) return res.status(404).json({ error: 'Post not found' });
   if (post.user_id !== req.user.id) return res.status(403).json({ error: 'Not authorized' });
 
-  const { title, description, budget, category, status } = req.body;
+  const {
+    title,
+    description,
+    budget,
+    category,
+    sub_category,
+    status
+  } = req.body;
+
   db.prepare(`
     UPDATE posts SET
-      title       = COALESCE(?, title),
-      description = COALESCE(?, description),
-      budget      = COALESCE(?, budget),
-      category    = COALESCE(?, category),
-      status      = COALESCE(?, status)
+      title        = COALESCE(?, title),
+      description  = COALESCE(?, description),
+      budget       = COALESCE(?, budget),
+      category     = COALESCE(?, category),
+      sub_category = COALESCE(?, sub_category),
+      status       = COALESCE(?, status)
     WHERE id = ?
-  `).run(title, description, budget, category, status, req.params.id);
+  `).run(
+    title,
+    description,
+    budget,
+    category,
+    sub_category,
+    status,
+    req.params.id
+  );
 
   res.json({ message: 'Post updated' });
 });

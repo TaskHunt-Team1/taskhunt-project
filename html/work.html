@@ -1113,8 +1113,10 @@
                       ${job.proposals_count > 0 ? '<span class="verified"></span>' : ''}
                     </div>
                     <p class="job-desc">${job.description}</p>
-                    <div class="tags"><span>${job.category}</span></div>
-                    <div class="meta">⏳ ${timeAgo(job.created_at)} | ${job.proposals_count} proposal${job.proposals_count !== 1 ? 's' : ''}</div>
+<div class="tags">
+  <span>${job.category}</span>
+  ${job.sub_category ? `<span>${job.sub_category}</span>` : ''}
+</div>                    <div class="meta">⏳ ${timeAgo(job.created_at)} | ${job.proposals_count} proposal${job.proposals_count !== 1 ? 's' : ''}</div>
                 </div>
                 <div class="card-side">
                     <div class="budget">$${job.budget}<span>Fixed Price</span></div>
@@ -1124,26 +1126,38 @@
             });
             document.getElementById("loadMoreBtn").style.display = visibleCount >= filteredJobs.length ? "none" : "block";
         }
+function filterJobs() {
+    const type = document.getElementById("typeFilter").value;
+    const priceRange = document.getElementById("priceFilter").value;
+    const searchTerm = document.getElementById("searchKeyword").value.toLowerCase().trim();
 
-        function filterJobs() {
-            const type      = document.getElementById("typeFilter").value;
-            const priceRange = document.getElementById("priceFilter").value;
-            const searchTerm = document.getElementById("searchKeyword")?.value.toLowerCase().trim() || "";
+    filteredJobs = allJobs.filter(job => {
 
-            filteredJobs = allJobs.filter(job => {
-                if (type !== "all" && job.category !== type) return false;
-                if (priceRange !== "all") {
-                    const [min, max] = priceRange.split("-").map(Number);
-                    if (job.budget < min || (max !== 9999 && job.budget > max)) return false;
-                }
-                if (searchTerm && !job.title.toLowerCase().includes(searchTerm) &&
-                    !job.description.toLowerCase().includes(searchTerm) &&
-                    !job.author_name.toLowerCase().includes(searchTerm)) return false;
-                return true;
-            });
-            visibleCount = 6;
-            renderJobs();
+        if (type !== "all" && job.category !== type)
+            return false;
+
+        if (priceRange !== "all") {
+            const [min, max] = priceRange.split("-").map(Number);
+            if (job.budget < min || (max !== 9999 && job.budget > max))
+                return false;
         }
+
+        if (
+            searchTerm &&
+            !job.title.toLowerCase().includes(searchTerm) &&
+            !job.description.toLowerCase().includes(searchTerm) &&
+            !(job.category || "").toLowerCase().includes(searchTerm) &&
+            !(job.sub_category || "").toLowerCase().includes(searchTerm)
+        ) {
+            return false;
+        }
+
+        return true;
+    });
+
+    visibleCount = 6;
+    renderJobs();
+}
 
         function loadMore() { visibleCount += 4; renderJobs(); }
 
@@ -1175,13 +1189,20 @@
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', e => { e.stopPropagation(); btn.parentElement.classList.toggle('active'); });
         });
-        document.querySelectorAll('.sub-categories a').forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                document.getElementById("searchKeyword").value = link.getAttribute('data-subtype') || '';
-                filterJobs();
-            });
-        });
+   document.querySelectorAll('.sub-categories a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+
+        const sub = link.dataset.subtype;
+
+        filteredJobs = allJobs.filter(job =>
+            job.sub_category === sub
+        );
+
+        visibleCount = 6;
+        renderJobs();
+    });
+});
 
         const menuToggle = document.getElementById("menuToggle");
         const navLinks   = document.getElementById("navLinks");

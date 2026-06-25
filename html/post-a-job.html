@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,11 @@
       --white: #ffffff;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -32,7 +37,7 @@
     /* ── NAVBAR ── */
     .navbar {
       background: var(--white);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
       height: 64px;
       display: flex;
       align-items: center;
@@ -43,7 +48,12 @@
       z-index: 200;
     }
 
-    .logo img { height: 40px; width: auto; display: block; object-fit: contain; }
+    .logo img {
+      height: 40px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
 
     .nav-links {
       display: flex;
@@ -59,9 +69,15 @@
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover {
+      color: var(--primary);
+    }
 
-    .auth-btns { display: flex; gap: 10px; align-items: center; }
+    .auth-btns {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
 
     .btn-login {
       background: var(--primary-light);
@@ -119,12 +135,12 @@
       font-size: 15px;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
 
     .btn-post-hero:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
     }
 
     /* ── FILTER BAR ── */
@@ -141,7 +157,7 @@
       display: flex;
       gap: 12px;
       align-items: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
       border: 1px solid var(--border);
       flex-wrap: wrap;
       justify-content: center;
@@ -158,7 +174,9 @@
       font-family: inherit;
     }
 
-    .filter-wrap input:focus { border-color: var(--accent); }
+    .filter-wrap input:focus {
+      border-color: var(--accent);
+    }
 
     .filter-wrap select {
       border: 1.5px solid var(--border);
@@ -207,7 +225,7 @@
     }
 
     .post-card:hover {
-      box-shadow: 0 12px 32px rgba(0,100,180,0.09);
+      box-shadow: 0 12px 32px rgba(0, 100, 180, 0.09);
       transform: translateY(-2px);
     }
 
@@ -333,7 +351,10 @@
       margin-left: 4px;
     }
 
-    .card-actions { display: flex; gap: 10px; }
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
 
     .btn-apply {
       background: var(--primary);
@@ -347,7 +368,10 @@
       transition: background 0.2s, transform 0.2s;
     }
 
-    .btn-apply:hover { background: #005f97; transform: scale(0.97); }
+    .btn-apply:hover {
+      background: #005f97;
+      transform: scale(0.97);
+    }
 
     .btn-msg {
       background: var(--primary-light);
@@ -364,7 +388,9 @@
       gap: 6px;
     }
 
-    .btn-msg:hover { background: #d0e9f8; }
+    .btn-msg:hover {
+      background: #d0e9f8;
+    }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -379,21 +405,27 @@
       margin-bottom: 16px;
     }
 
-    .empty-state h3 { font-size: 18px; color: #3a4a60; margin-bottom: 8px; }
+    .empty-state h3 {
+      font-size: 18px;
+      color: #3a4a60;
+      margin-bottom: 8px;
+    }
 
     /* ── MODAL ── */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(5,25,35,0.6);
+      background: rgba(5, 25, 35, 0.6);
       backdrop-filter: blur(4px);
       z-index: 9999;
       align-items: center;
       justify-content: center;
     }
 
-    .modal-overlay.open { display: flex; }
+    .modal-overlay.open {
+      display: flex;
+    }
 
     .modal-box {
       background: var(--white);
@@ -404,13 +436,20 @@
       overflow-y: auto;
       padding: 36px 40px;
       position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-      animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     @keyframes popIn {
-      from { transform: scale(0.88); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
+      from {
+        transform: scale(0.88);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .modal-close {
@@ -425,7 +464,9 @@
       transition: color 0.2s;
     }
 
-    .modal-close:hover { color: var(--dark); }
+    .modal-close:hover {
+      color: var(--dark);
+    }
 
     .modal-box h2 {
       font-size: 22px;
@@ -473,11 +514,14 @@
     .form-field textarea:focus,
     .form-field select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(0,168,255,0.12);
+      box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.12);
       background: #fff;
     }
 
-    .form-field textarea { resize: vertical; min-height: 100px; }
+    .form-field textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
 
     .form-row-2 {
       display: grid;
@@ -505,7 +549,7 @@
 
     .btn-submit-post:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,168,255,0.3);
+      box-shadow: 0 8px 24px rgba(0, 168, 255, 0.3);
     }
 
     /* ── FOOTER ── */
@@ -524,7 +568,10 @@
       gap: 36px;
     }
 
-    .footer-col { flex: 1; min-width: 180px; }
+    .footer-col {
+      flex: 1;
+      min-width: 180px;
+    }
 
     .footer-col h3 {
       font-size: 17px;
@@ -533,20 +580,30 @@
       color: #fff;
     }
 
-    .footer-col ul { list-style: none; }
+    .footer-col ul {
+      list-style: none;
+    }
 
-    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
 
     .footer-col ul li a {
       text-decoration: none;
-      color: rgba(255,255,255,0.65);
+      color: rgba(255, 255, 255, 0.65);
       font-size: 14px;
       transition: color 0.2s;
     }
 
-    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-col ul li a:hover {
+      color: var(--accent);
+    }
 
-    .social-icons { display: flex; gap: 12px; margin-top: 10px; }
+    .social-icons {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
 
     .social-icon {
       width: 30px;
@@ -557,22 +614,35 @@
       cursor: pointer;
     }
 
-    .social-icon:hover { opacity: 1; }
+    .social-icon:hover {
+      opacity: 1;
+    }
 
     .footer-bottom {
       text-align: center;
       padding-top: 24px;
       margin-top: 30px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 13px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
     }
 
     @media (max-width: 600px) {
-      .modal-box { padding: 26px 20px; }
-      .form-row-2 { grid-template-columns: 1fr; }
-      .card-top { flex-direction: column; }
-      .page-hero h1 { font-size: 26px; }
+      .modal-box {
+        padding: 26px 20px;
+      }
+
+      .form-row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .card-top {
+        flex-direction: column;
+      }
+
+      .page-hero h1 {
+        font-size: 26px;
+      }
     }
   </style>
 </head>
@@ -597,12 +667,14 @@
   </nav>
 
   <!-- TOP BAR -->
-  <div style="max-width:860px;margin:28px auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+  <div
+    style="max-width:860px;margin:28px auto 0;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
     <div>
       <h2 style="font-size:22px;font-weight:700;color:#0f2a45;margin-bottom:3px;">Open Opportunities</h2>
       <p style="font-size:13px;color:#6b7a8d;">Jobs posted by clients and services offered by freelancers</p>
     </div>
-    <button id="openModalBtn" style="background:#0077B8;color:#fff;border:none;padding:11px 24px;border-radius:30px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;">
+    <button id="openModalBtn"
+      style="background:#0077B8;color:#fff;border:none;padding:11px 24px;border-radius:30px;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;">
       <i class="fas fa-plus"></i> Post Something
     </button>
   </div>
@@ -649,7 +721,8 @@
 
         <div class="form-field">
           <label>Description</label>
-          <textarea id="postContent" rows="4" placeholder="Describe the task or your expertise in detail…" required></textarea>
+          <textarea id="postContent" rows="4" placeholder="Describe the task or your expertise in detail…"
+            required></textarea>
         </div>
 
         <div class="form-row-2">
@@ -659,7 +732,27 @@
           </div>
           <div class="form-field">
             <label>Category / Skills</label>
-            <input type="text" id="postTags" placeholder="React, Design, SQL…">
+            <select id="postTags" required>
+              <option value="">Select Category</option>
+
+              <option>Development & IT</option>
+              <option>Data & AI</option>
+              <option>Design & Creative</option>
+              <option>Sales & Marketing</option>
+              <option>Writing & Translation</option>
+              <option>Admin & Support</option>
+              <option>Finance & Accounting</option>
+              <option>Legal</option>
+              <option>HR & Training</option>
+              <option>Engineering & Architecture</option>
+
+            </select>
+            <div class="form-field">
+  <label>Sub Category</label>
+  <select id="postSubCategory" required>
+    <option value="">Select Sub Category</option>
+  </select>
+</div>
           </div>
         </div>
 
@@ -715,17 +808,17 @@
   <script src="../assets/js/api.js"></script>
   <script src="/assets/js/navbar.js"></script>
   <script>
-    let allPosts    = [];
-    let filtered    = [];
+    let allPosts = [];
+    let filtered = [];
 
-    const feed       = document.getElementById('postsFeed');
-    const feedMeta   = document.getElementById('feedMeta');
-    const modal      = document.getElementById('postModal');
-    const openBtn    = document.getElementById('openModalBtn');
-    const closeBtn   = document.getElementById('closeModalBtn');
-    const postForm   = document.getElementById('postForm');
+    const feed = document.getElementById('postsFeed');
+    const feedMeta = document.getElementById('feedMeta');
+    const modal = document.getElementById('postModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const postForm = document.getElementById('postForm');
     const searchInput = document.getElementById('searchInput');
-    const typeFilter  = document.getElementById('typeFilter');
+    const typeFilter = document.getElementById('typeFilter');
 
     openBtn.onclick = () => {
       if (!Auth.isLoggedIn()) { window.location.href = 'login.html'; return; }
@@ -736,7 +829,7 @@
 
     function timeAgo(dateStr) {
       const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
-      if (diff < 3600)  return Math.floor(diff / 60) + 'm ago';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
       if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
       return Math.floor(diff / 86400) + 'd ago';
     }
@@ -756,20 +849,20 @@
       }
 
       list.forEach(post => {
-        const isJob      = post.post_type !== 'service';
+        const isJob = post.post_type !== 'service';
         const badgeClass = isJob ? 'badge-job' : 'badge-service';
-        const badgeText  = isJob ? 'Job' : 'Service';
+        const badgeText = isJob ? 'Job' : 'Service';
 
         const av = post.author_avatar
           ? `<img src="${post.author_avatar}" class="author-avatar">`
-          : `<div class="author-avatar-init">${(post.author_name||'U').charAt(0).toUpperCase()}</div>`;
+          : `<div class="author-avatar-init">${(post.author_name || 'U').charAt(0).toUpperCase()}</div>`;
 
         const me = Auth.user();
         const isSelf = me && me.id === (post.user_id || post.id);
 
         const actions = isSelf ? '' : `
           <div class="card-actions">
-            <button class="btn-apply msg-btn" data-author-id="${post.user_id||''}">
+            <button class="btn-apply msg-btn" data-author-id="${post.user_id || ''}">
               <i class="fas fa-paper-plane"></i> ${isJob ? 'Apply Now' : 'Contact'}
             </button>
           </div>`;
@@ -801,13 +894,13 @@
 
     function applyFilters() {
       const search = searchInput.value.toLowerCase().trim();
-      const type   = typeFilter.value;
+      const type = typeFilter.value;
       filtered = allPosts.filter(p => {
-        if (type === 'job'     && p.post_type === 'service') return false;
+        if (type === 'job' && p.post_type === 'service') return false;
         if (type === 'service' && p.post_type !== 'service') return false;
         if (search && !p.title.toLowerCase().includes(search) &&
-            !p.description.toLowerCase().includes(search) &&
-            !(p.category||'').toLowerCase().includes(search)) return false;
+          !p.description.toLowerCase().includes(search) &&
+          !(p.category || '').toLowerCase().includes(search)) return false;
         return true;
       });
       renderFeed(filtered);
@@ -832,41 +925,143 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.token() }
       })
-      .then(r => r.json())
-      .then(conv => { window.location.href = `chat.html?type=direct&id=${conv.id}`; })
-      .catch(() => {
-        alert('Could not open chat. Is the server running?');
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Apply Now';
-        btn.disabled = false;
-      });
+        .then(r => r.json())
+        .then(conv => { window.location.href = `chat.html?type=direct&id=${conv.id}`; })
+        .catch(() => {
+          alert('Could not open chat. Is the server running?');
+          btn.innerHTML = '<i class="fas fa-paper-plane"></i> Apply Now';
+          btn.disabled = false;
+        });
     });
-const params = new URLSearchParams(window.location.search);
-const editId = params.get('edit');
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get('edit');
 
-if (editId) {
-  (async () => {
-    try {
-      const post = await getPost(editId);
+    if (editId) {
+      (async () => {
+        try {
+          const post = await getPost(editId);
 
-      document.getElementById('postTitle').value = post.title;
-      document.getElementById('postContent').value = post.description;
-      document.getElementById('postBudget').value = post.budget;
-      document.getElementById('postTags').value = post.category;
+          document.getElementById('postTitle').value = post.title;
+          document.getElementById('postContent').value = post.description;
+          document.getElementById('postBudget').value = post.budget;
+          document.getElementById('postTags').value = post.category;
 
-      document.getElementById('postType').value =
-        post.post_type === 'service' ? 'freelancer' : 'client';
+          document.getElementById('postType').value =
+            post.post_type === 'service' ? 'freelancer' : 'client';
 
-      document.querySelector('.modal-box h2').textContent = 'Edit Post';
-      document.querySelector('.modal-sub').textContent = 'Update your post information.';
-      document.querySelector('.btn-submit-post').innerHTML =
-        '<i class="fas fa-save"></i> Save Changes';
+          document.querySelector('.modal-box h2').textContent = 'Edit Post';
+          document.querySelector('.modal-sub').textContent = 'Update your post information.';
+          document.querySelector('.btn-submit-post').innerHTML =
+            '<i class="fas fa-save"></i> Save Changes';
 
-      modal.classList.add('open');
-    } catch (e) {
-      alert(e.message);
+          modal.classList.add('open');
+        } catch (e) {
+          alert(e.message);
+        }
+      })();
     }
-  })();
-}
+    const subCategories = {
+  "Development & IT": [
+    "Full Stack Engineers",
+    "Backend Developers",
+    "DevOps Engineers",
+    "Android Developers",
+    "Cyber Security Engineers"
+  ],
+
+  "Data & AI": [
+    "Data Analysis & Visualization",
+    "Machine Learning Models",
+    "Data Engineering",
+    "Deep Learning",
+    "Predictive Analytics",
+    "Generative AI"
+  ],
+
+  "Design & Creative": [
+    "Brand & Logo Designers",
+    "Graphic Designers",
+    "UX Designers",
+    "Instagram Reel Editors",
+    "Youtube Video Editors",
+    "Videographers",
+    "Web Designers"
+  ],
+
+  "Sales & Marketing": [
+    "Digital Marketers",
+    "Sales Representatives",
+    "Business Development Managers",
+    "SEO Specialists",
+    "Social Media Managers",
+    "Email Marketing Experts",
+    "Lead Generation Experts",
+    "Branding Experts",
+    "Ecommerce Consultants"
+  ],
+
+  "Writing & Translation": [
+    "Content Writers",
+    "Copywriters",
+    "Technical Writers",
+    "Translators",
+    "Proofreaders"
+  ],
+
+  "Admin & Support": [
+    "Personal Assistants",
+    "Google Docs Experts",
+    "Google Sheets Experts",
+    "Microsoft Excel Experts",
+    "Microsoft Office Specialists",
+    "Microsoft Word Experts",
+    "PowerPoint Experts"
+  ],
+
+  "Finance & Accounting": [
+    "Business Consultants",
+    "Accounts Payable Managers",
+    "Financial Modelers",
+    "Management Consultants",
+    "Fractional CFOs"
+  ],
+
+  "Legal": [
+    "Corporate Law Professionals",
+    "Immigration Law Professionals",
+    "Legal Advisors",
+    "Legal Consultants"
+  ],
+
+  "HR & Training": [
+    "Employee Engagement Specialists",
+    "Leadership Development Specialists",
+    "Technical Recruiters",
+    "Curriculum Developers"
+  ],
+
+  "Engineering & Architecture": [
+    "AutoCAD Developers",
+    "Engineering Consultants",
+    "Interior Architects",
+    "Architectural Modelers"
+  ]
+};
+
+const categorySelect = document.getElementById("postTags");
+const subCategorySelect = document.getElementById("postSubCategory");
+
+categorySelect.addEventListener("change", () => {
+
+  subCategorySelect.innerHTML =
+    '<option value="">Select Sub Category</option>';
+
+  (subCategories[categorySelect.value] || []).forEach(item => {
+    subCategorySelect.innerHTML +=
+      `<option value="${item}">${item}</option>`;
+  });
+
+});
     // Submit new post
     postForm.onsubmit = async e => {
       e.preventDefault();
@@ -875,62 +1070,64 @@ if (editId) {
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing…';
 
       const payload = {
-        title:       document.getElementById('postTitle').value.trim(),
+        title: document.getElementById('postTitle').value.trim(),
         description: document.getElementById('postContent').value.trim(),
-        budget:      Number(document.getElementById('postBudget').value) || 0,
-        category:    document.getElementById('postTags').value.trim() || 'General',
-        post_type:   document.getElementById('postType').value === 'freelancer' ? 'service' : 'job'
+        budget: Number(document.getElementById('postBudget').value) || 0,
+        category: document.getElementById('postTags').value.trim() || 'General',
+        sub_category: document.getElementById('postSubCategory').value,
+        post_type: document.getElementById('postType').value === 'freelancer' ? 'service' : 'job'
       };
 
-try {
+      try {
 
-  const url = editId ? `/posts/${editId}` : '/posts';
-  const method = editId ? 'PUT' : 'POST';
+        const url = editId ? `/posts/${editId}` : '/posts';
+        const method = editId ? 'PUT' : 'POST';
 
-  const res = await fetch(API + url, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + Auth.token()
-    },
-    body: JSON.stringify(payload)
-  });
+        const res = await fetch(API + url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Auth.token()
+          },
+          body: JSON.stringify(payload)
+        });
 
-  const data = await res.json();
+        const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(data.error || 'Failed');
-  }
+        if (!res.ok) {
+          throw new Error(data.error || 'Failed');
+        }
 
-  alert(editId ? 'Post updated successfully' : 'Post created successfully');
+        alert(editId ? 'Post updated successfully' : 'Post created successfully');
 
-  window.location.href = 'work.html';
+        window.location.href = 'work.html';
 
-} catch (err) {
-  alert('Error: ' + err.message);
-} finally {
-  btn.disabled = false;
-  btn.innerHTML = editId
-    ? '<i class="fas fa-save"></i> Save Changes'
-    : '<i class="fas fa-paper-plane"></i> Publish Post';
-}
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = editId
+          ? '<i class="fas fa-save"></i> Save Changes'
+          : '<i class="fas fa-paper-plane"></i> Publish Post';
+      }
     };
 
-   // Load feed
-async function loadFeed() {
-  feed.innerHTML = '<p style="text-align:center;color:#aaa;padding:3rem;">Loading…</p>';
+    // Load feed
+    async function loadFeed() {
+      feed.innerHTML = '<p style="text-align:center;color:#aaa;padding:3rem;">Loading…</p>';
 
-  try {
-    const res = await fetch(API + '/posts?limit=100&status=open');
-    allPosts = await res.json();
-    applyFilters();
-  } catch {
-    feed.innerHTML = '<p style="text-align:center;color:#e00;padding:3rem;">Failed to load. Is the server running?</p>';
-  }
-}
+      try {
+        const res = await fetch(API + '/posts?limit=100&status=open');
+        allPosts = await res.json();
+        applyFilters();
+      } catch {
+        feed.innerHTML = '<p style="text-align:center;color:#e00;padding:3rem;">Failed to load. Is the server running?</p>';
+      }
+    }
 
-loadFeed();
+    loadFeed();
   </script>
 
 </body>
+
 </html>
