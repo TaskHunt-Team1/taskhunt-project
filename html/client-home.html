@@ -525,7 +525,7 @@ async function loadTasks() {
   const grid    = document.getElementById('trending-grid');
   const loading = document.getElementById('tasks-loading');
   try {
-    const posts = await getPosts('limit=8');
+const posts = await getPosts('limit=6&status=open');
     loading.style.display = 'none';
     grid.innerHTML = posts.length
       ? posts.map(taskCard).join('')
