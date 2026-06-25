@@ -840,7 +840,33 @@
         btn.disabled = false;
       });
     });
+const params = new URLSearchParams(window.location.search);
+const editId = params.get('edit');
 
+if (editId) {
+  (async () => {
+    try {
+      const post = await getPost(editId);
+
+      document.getElementById('postTitle').value = post.title;
+      document.getElementById('postContent').value = post.description;
+      document.getElementById('postBudget').value = post.budget;
+      document.getElementById('postTags').value = post.category;
+
+      document.getElementById('postType').value =
+        post.post_type === 'service' ? 'freelancer' : 'client';
+
+      document.querySelector('.modal-box h2').textContent = 'Edit Post';
+      document.querySelector('.modal-sub').textContent = 'Update your post information.';
+      document.querySelector('.btn-submit-post').innerHTML =
+        '<i class="fas fa-save"></i> Save Changes';
+
+      modal.classList.add('open');
+    } catch (e) {
+      alert(e.message);
+    }
+  })();
+}
     // Submit new post
     postForm.onsubmit = async e => {
       e.preventDefault();
@@ -856,37 +882,54 @@
         post_type:   document.getElementById('postType').value === 'freelancer' ? 'service' : 'job'
       };
 
-      try {
-        const res  = await fetch('/api/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + Auth.token() },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed');
+try {
 
-        window.location.href = 'work.html';
-      } catch (err) {
-        alert('Error: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Post';
-      }
+  const url = editId ? `/posts/${editId}` : '/posts';
+  const method = editId ? 'PUT' : 'POST';
+
+  const res = await fetch(API + url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + Auth.token()
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed');
+  }
+
+  alert(editId ? 'Post updated successfully' : 'Post created successfully');
+
+  window.location.href = 'work.html';
+
+} catch (err) {
+  alert('Error: ' + err.message);
+} finally {
+  btn.disabled = false;
+  btn.innerHTML = editId
+    ? '<i class="fas fa-save"></i> Save Changes'
+    : '<i class="fas fa-paper-plane"></i> Publish Post';
+}
     };
 
-    // Load feed
-    async function loadFeed() {
-      feed.innerHTML = '<p style="text-align:center;color:#aaa;padding:3rem;">Loading…</p>';
-      try {
-        const res = await fetch('/api/posts?limit=100&status=open');
-        allPosts   = await res.json();
-        applyFilters();
-      } catch {
-        feed.innerHTML = '<p style="text-align:center;color:#e00;padding:3rem;">Failed to load. Is the server running?</p>';
-      }
-    }
+   // Load feed
+async function loadFeed() {
+  feed.innerHTML = '<p style="text-align:center;color:#aaa;padding:3rem;">Loading…</p>';
 
-    loadFeed();
+  try {
+    const res = await fetch(API + '/posts?limit=100&status=open');
+    allPosts = await res.json();
+    applyFilters();
+  } catch {
+    feed.innerHTML = '<p style="text-align:center;color:#e00;padding:3rem;">Failed to load. Is the server running?</p>';
+  }
+}
+
+loadFeed();
   </script>
 
 </body>
