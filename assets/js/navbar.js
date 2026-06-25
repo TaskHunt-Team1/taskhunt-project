@@ -13,7 +13,7 @@
   style.textContent = `
     .th-nav {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 30px; height: 60px;
+      padding: 0 30px; height: 75px;
       background: #ffffff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       position: sticky; top: 0; z-index: 900;
@@ -21,7 +21,7 @@
       box-sizing: border-box;
     }
     .th-nav .th-logo { display:flex; align-items:center; height:100%; flex-shrink:0; }
-    .th-nav .th-logo img { height:38px; width:auto; display:block; object-fit:contain; }
+    .th-nav .th-logo img { height:35px; width:auto; display:block; object-fit:contain; }
     .th-nav .th-logo-text { font-size:20px; font-weight:800; color:#0077B8; letter-spacing:-0.5px; }
     .th-nav .th-links {
       display:flex; list-style:none; gap:28px; margin:0; padding:0;
