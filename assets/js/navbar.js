@@ -83,13 +83,71 @@
     .th-notif-item:hover { background:#eef5ff; }
 
     .th-nav .th-toggle { display:none; font-size:22px; cursor:pointer; color:#333; background:none; border:none; }
-    @media (max-width:768px) {
-      .th-nav .th-links {
-        display:none; flex-direction:column; gap:0;
-        position:fixed; top:60px; left:0; right:0;
-        background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1);
-        transform:none; padding:8px 0; z-index:899;
-      }
+   @media (max-width:768px){
+
+  .th-nav{
+      height:56px;
+      padding:0 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+  }
+
+  .th-logo img{
+      height:30px;
+  }
+
+  .th-right{
+      gap:6px;
+      margin-left:auto;
+      margin-right:8px;
+  }
+
+  .th-btn{
+      padding:6px 10px;
+      font-size:12px;
+      border-radius:6px;
+  }
+
+  .th-btn-login{
+      min-width:58px;
+  }
+
+  .th-btn-signup{
+      min-width:68px;
+  }
+
+  .th-toggle{
+      display:block;
+      font-size:22px;
+      padding:4px;
+      margin-left:4px;
+  }
+
+  .th-links{
+      display:none;
+      position:fixed;
+      top:56px;
+      left:0;
+      right:0;
+      flex-direction:column;
+      background:#fff;
+      transform:none;
+      padding:8px 0;
+      box-shadow:0 6px 20px rgba(0,0,0,.1);
+  }
+
+  .th-links.open{
+      display:flex;
+  }
+
+  .th-links li a{
+      display:block;
+      padding:14px 20px;
+      font-size:15px;
+  }
+
+}
       .th-nav .th-links.open { display:flex; }
       .th-nav .th-links li a { padding:12px 24px; display:block; font-size:16px; }
       .th-nav .th-toggle { display:block; }
