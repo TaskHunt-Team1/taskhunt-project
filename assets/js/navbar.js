@@ -124,20 +124,8 @@
       margin-left:4px;
   }
 
-.th-links{
-    display:none;
-    position:absolute;
-    top:56px;
-    right:0;
-    left:auto;
-    width:220px;
-    flex-direction:column;
-    background:#fff;
-    border-radius:12px;
-    box-shadow:0 10px 25px rgba(0,0,0,.15);
-    transform:none;
-    padding:8px 0;
-    z-index:1000;
+.th-nav{
+    position:relative;
 }
 
   .th-links.open{
