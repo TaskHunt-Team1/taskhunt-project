@@ -589,7 +589,12 @@ nav ul li a:hover {
 }
 
 /* ================= RESPONSIVE ================= */
-
+@media (max-width:768px){
+  .search-box{
+    margin-left:0;
+    max-width:100%;
+  }
+}
 /* Tablet */
 @media (max-width: 1200px) {
   .categories {
