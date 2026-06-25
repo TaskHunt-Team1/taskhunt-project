@@ -83,7 +83,7 @@
     .th-notif-item:hover { background:#eef5ff; }
 
     .th-nav .th-toggle { display:none; font-size:22px; cursor:pointer; color:#333; background:none; border:none; }
-   @media (max-width:768px){
+  @media (max-width:768px){
 
   .th-nav{
       height:56px;
@@ -148,10 +148,6 @@
   }
 
 }
-      .th-nav .th-links.open { display:flex; }
-      .th-nav .th-links li a { padding:12px 24px; display:block; font-size:16px; }
-      .th-nav .th-toggle { display:block; }
-    }
   `;
   document.head.appendChild(style);
 
