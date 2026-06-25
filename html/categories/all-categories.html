@@ -12,58 +12,77 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="../../assets/css/categories.css">
-  <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/theme.js"></script>
 </head>
 
 <body>
 
 
-  
-<!-- NAVBAR -->
-<nav class="nav">
-  <div class="logo">
-    <a href="home.html"><img src="../assets/images/logo.png" alt="Logo"></a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="work.html">Find Work</a></li>
-    <li><a href="hie-talent.html">Hire Talent</a></li>
-    <li><a href="#about-section">About</a></li>
-    <li><a href="#contact-section">Contact</a></li>
-  </ul>
-  <div class="user-menu-container">
-    <div class="notifications animated-bell" style="position:relative;cursor:pointer;" onclick="toggleNotifDropdown(event)">
-      <i class="fa-solid fa-bell bell-icon"></i>
-      <span id="notifCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
-      <div id="notifDropdown" style="display:none;position:absolute;top:40px;right:-10px;width:320px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
-        <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">Notifications</div>
-        <div id="notifDropList" style="max-height:300px;overflow-y:auto;"></div>
-        <a href="dashboard/dash-client.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Notifications →</a>
-      </div>
-    </div>
 
-    <!-- Messages Icon -->
-    <div id="msgIconWrap" style="position:relative;cursor:pointer;margin-right:4px;" onclick="toggleMsgDropdown(event)">
-      <i class="fa-solid fa-comment-dots" style="font-size:20px;color:#555;"></i>
-      <span id="msgCount" style="display:none;position:absolute;top:-5px;right:-6px;background:#22c55e;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
-      <div id="msgDropdown" style="display:none;position:absolute;top:40px;right:-10px;width:300px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
-        <div style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">Messages</div>
-        <div id="msgDropList" style="max-height:280px;overflow-y:auto;"></div>
-        <a href="chat.html" style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See All Messages →</a>
-      </div>
-    </div>
+    <!-- NAVBAR -->
+    <nav class="nav">
+        <div class="logo">
+            <a href="home.html"><img src="../assets/images/logo.png" alt="Logo"></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="work.html">Find Work</a></li>
+            <li><a href="hie-talent.html">Hire Talent</a></li>
+            <li><a href="#about-section">About</a></li>
+            <li><a href="#contact-section">Contact</a></li>
+        </ul>
+        <div class="user-menu-container">
+            <div class="notifications animated-bell" style="position:relative;cursor:pointer;"
+                onclick="toggleNotifDropdown(event)">
+                <i class="fa-solid fa-bell bell-icon"></i>
+                <span id="notifCount"
+                    style="display:none;position:absolute;top:-5px;right:-6px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
+                <div id="notifDropdown"
+                    style="display:none;position:absolute;top:40px;right:-10px;width:320px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
+                    <div
+                        style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">
+                        Notifications</div>
+                    <div id="notifDropList" style="max-height:300px;overflow-y:auto;"></div>
+                    <a href="dashboard/dash-client.html"
+                        style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See
+                        All Notifications →</a>
+                </div>
+            </div>
 
-    <div class="profile-wrapper">
-      <div id="nav-avatar-circle" style="width:36px;height:36px;border-radius:50%;background:#0090E0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;cursor:pointer;" onclick="toggleProfileDropdown(event)">?</div>
-      <div class="nav-dropdown">
-        <span id="nav-user-name" style="padding:10px 16px;display:block;font-weight:600;color:#051923;border-bottom:1px solid #eee;"></span>
-        <a href="dashboard/dash-client.html">Dashboard</a>
-        <a href="#" id="nav-post-btn" style="color:#0090E0;font-weight:600;">+ Post a Job</a>
-        <a href="#" onclick="toggleDarkMode();return false;" id="dark-mode-btn" style="color:#555;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-moon"></i> Dark Mode</a>
-        <a href="#" onclick="Auth.logout();return false;" style="color:#e53e3e;">Logout</a>
-      </div>
-    </div>
-  </div>
-</nav>
+            <!-- Messages Icon -->
+            <div id="msgIconWrap" style="position:relative;cursor:pointer;margin-right:4px;"
+                onclick="toggleMsgDropdown(event)">
+                <i class="fa-solid fa-comment-dots" style="font-size:20px;color:#555;"></i>
+                <span id="msgCount"
+                    style="display:none;position:absolute;top:-5px;right:-6px;background:#22c55e;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;align-items:center;justify-content:center;"></span>
+                <div id="msgDropdown"
+                    style="display:none;position:absolute;top:40px;right:-10px;width:300px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:1000;border:1px solid #eee;overflow:hidden;">
+                    <div
+                        style="padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid #eee;color:#051923;">
+                        Messages</div>
+                    <div id="msgDropList" style="max-height:280px;overflow-y:auto;"></div>
+                    <a href="chat.html"
+                        style="display:block;text-align:center;padding:11px;color:#0077B8;font-size:13px;font-weight:600;border-top:1px solid #eee;text-decoration:none;">See
+                        All Messages →</a>
+                </div>
+            </div>
+
+            <div class="profile-wrapper">
+                <div id="nav-avatar-circle"
+                    style="width:36px;height:36px;border-radius:50%;background:#0090E0;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;cursor:pointer;"
+                    onclick="toggleProfileDropdown(event)">?</div>
+                <div class="nav-dropdown">
+                    <span id="nav-user-name"
+                        style="padding:10px 16px;display:block;font-weight:600;color:#051923;border-bottom:1px solid #eee;"></span>
+                    <a href="dashboard/dash-client.html">Dashboard</a>
+                    <a href="#" id="nav-post-btn" style="color:#0090E0;font-weight:600;">+ Post a Job</a>
+                    <a href="#" onclick="toggleDarkMode();return false;" id="dark-mode-btn"
+                        style="color:#555;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-moon"></i>
+                        Dark Mode</a>
+                    <a href="#" onclick="Auth.logout();return false;" style="color:#e53e3e;">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <!-- ===== HERO ===== -->
     <section class="hero-title">
 
@@ -76,46 +95,82 @@
         <div class="filter-container">
             <select id="typeFilter">
                 <option value="all">All Categories</option>
+
+                <!-- Data & AI -->
                 <option value="Data Analysis & Visualization">Data Analysis & Visualization</option>
-                <option value="Machine Learning">Machine Learning</option>
-                <option value="Deep Learning">Deep Learning</option>
+                <option value="Machine Learning Models">Machine Learning Models</option>
                 <option value="Data Engineering">Data Engineering</option>
+                <option value="Deep Learning">Deep Learning</option>
                 <option value="Predictive Analytics">Predictive Analytics</option>
                 <option value="Generative AI">Generative AI</option>
-                <option value="Full Stack">Full Stack</option>
-                <option value="Backend">Backend</option>
-                <option value="DevOps">DevOps</option>
-                <option value="Android Development">Android Development</option>
-                <option value="Cyber Security">Cyber Security</option>
-                <option value="Graphic Design">Graphic Design</option>
-                <option value="UX/UI">UX/UI</option>
-                <option value="Video Editing">Video Editing</option>
-                <option value="Brand Design">Brand Design</option>
-                <option value="Web Design">Web Design</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="SEO">SEO</option>
-                <option value="Social Media">Social Media</option>
-                <option value="Facebook Ads">Facebook Ads</option>
-                <option value="Ecommerce">Ecommerce</option>
-                <option value="Content Writing">Content Writing</option>
-                <option value="Translation">Translation</option>
-                <option value="Copywriting">Copywriting</option>
-                <option value="Academic Writing">Academic Writing</option>
-                <option value="Virtual Assistant">Virtual Assistant</option>
-                <option value="Data Entry">Data Entry</option>
-                <option value="Excel Expert">Excel Expert</option>
-                <option value="Microsoft Office">Microsoft Office</option>
-                <option value="Financial Analysis">Financial Analysis</option>
-                <option value="Accounting">Accounting</option>
-                <option value="Tax Consulting">Tax Consulting</option>
-                <option value="Legal Consulting">Legal Consulting</option>
-                <option value="Contract Law">Contract Law</option>
-                <option value="Corporate Law">Corporate Law</option>
-                <option value="Technical Recruiting">Technical Recruiting</option>
-                <option value="HR Consulting">HR Consulting</option>
-                <option value="AutoCAD">AutoCAD</option>
-                <option value="Architecture">Architecture</option>
-                <option value="Civil Engineering">Civil Engineering</option>
+
+                <!-- Development & IT -->
+                <option value="Full Stack Engineers">Full Stack Engineers</option>
+                <option value="Backend Developers">Backend Developers</option>
+                <option value="DevOps Engineers">DevOps Engineers</option>
+                <option value="Android Developers">Android Developers</option>
+                <option value="Cyber Security Engineers">Cyber Security Engineers</option>
+
+                <!-- Design & Creative -->
+                <option value="Brand & Logo Designers">Brand & Logo Designers</option>
+                <option value="Graphic Designers">Graphic Designers</option>
+                <option value="UX Designers">UX Designers</option>
+                <option value="Instagram Reel Editors">Instagram Reel Editors</option>
+                <option value="Youtube Video Editors">Youtube Video Editors</option>
+                <option value="Videographers">Videographers</option>
+                <option value="Web Designers">Web Designers</option>
+
+                <!-- Sales & Marketing -->
+                <option value="Digital Marketers">Digital Marketers</option>
+                <option value="Sales Representatives">Sales Representatives</option>
+                <option value="Business Development Managers">Business Development Managers</option>
+                <option value="SEO Specialists">SEO Specialists</option>
+                <option value="Social Media Managers">Social Media Managers</option>
+                <option value="Email Marketing Experts">Email Marketing Experts</option>
+                <option value="Lead Generation Experts">Lead Generation Experts</option>
+                <option value="Branding Experts">Branding Experts</option>
+                <option value="Ecommerce Consultants">Ecommerce Consultants</option>
+
+                <!-- Writing & Translation -->
+                <option value="Content Writers">Content Writers</option>
+                <option value="Copywriters">Copywriters</option>
+                <option value="Technical Writers">Technical Writers</option>
+                <option value="Translators">Translators</option>
+                <option value="Proofreaders">Proofreaders</option>
+
+                <!-- Admin & Support -->
+                <option value="Personal Assistants">Personal Assistants</option>
+                <option value="Google Docs Experts">Google Docs Experts</option>
+                <option value="Google Sheets Experts">Google Sheets Experts</option>
+                <option value="Microsoft Excel Experts">Microsoft Excel Experts</option>
+                <option value="Microsoft Office Specialists">Microsoft Office Specialists</option>
+                <option value="Microsoft Word Experts">Microsoft Word Experts</option>
+                <option value="PowerPoint Experts">PowerPoint Experts</option>
+
+                <!-- Finance & Accounting -->
+                <option value="Business Consultants">Business Consultants</option>
+                <option value="Accounts Payable Managers">Accounts Payable Managers</option>
+                <option value="Financial Modelers">Financial Modelers</option>
+                <option value="Management Consultants">Management Consultants</option>
+                <option value="Fractional CFOs">Fractional CFOs</option>
+
+                <!-- Legal -->
+                <option value="Corporate Law Professionals">Corporate Law Professionals</option>
+                <option value="Immigration Law Professionals">Immigration Law Professionals</option>
+                <option value="Legal Advisors">Legal Advisors</option>
+                <option value="Legal Consultants">Legal Consultants</option>
+
+                <!-- HR & Training -->
+                <option value="Employee Engagement Specialists">Employee Engagement Specialists</option>
+                <option value="Leadership Development Specialists">Leadership Development Specialists</option>
+                <option value="Technical Recruiters">Technical Recruiters</option>
+                <option value="Curriculum Developers">Curriculum Developers</option>
+
+                <!-- Engineering & Architecture -->
+                <option value="AutoCAD Developers">AutoCAD Developers</option>
+                <option value="Engineering Consultants">Engineering Consultants</option>
+                <option value="Interior Architects">Interior Architects</option>
+                <option value="Architectural Modelers">Architectural Modelers</option>
             </select>
             <select id="priceFilter">
                 <option value="all">All Prices</option>
@@ -139,77 +194,91 @@
     <div class="page-layout">
 
         <!-- ===== SIDEBAR (Categories - Ø¨ØªØ´ØªØºÙ„ ÙˆØªÙÙ„ØªØ±) ===== -->
-       <aside class="sidebar">
-       <a href="all-categories.html" class="lin"> <button class="category-btn"><b>Categories</b><span class="arrow">›</span></button></a>
-      
-  <!-- Data & AI -->
-       <div class="category">
-        <a href="data-ai.html" class="lin"><button class="category-btn">Data & AI <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Data Analysis & Visualization">Data Analysis & Visualization</a></li>
-          <li><a href="#" class="filter-link" data-type="Machine Learning Models">Machine Learning Models</a></li>
-          <li><a href="#" class="filter-link" data-type="Data Engineering">Data Engineering</a></li>
-          <li><a href="#" class="filter-link" data-type="Deep Learning">Deep Learning</a></li>
-          <li><a href="#" class="filter-link" data-type="Predictive Analytics">Predictive Analytics</a></li>
-          <li><a href="#" class="filter-link" data-type="Generative AI">Generative AI</a></li>
-        </ul>
-      </div>
+        <aside class="sidebar">
+            <a href="all-categories.html" class="lin"> <button class="category-btn"><b>Categories</b><span
+                        class="arrow">›</span></button></a>
 
-      <!-- Development & IT -->
-   <div class="category">
-       <a href="development-it.html" class="lin"><button class="category-btn">Development & IT <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="" class="filter-link" data-type="Full Stack Engineers">Full Stack Engineers</a></li>
-          <li><a href="#" class="filter-link" data-type="Backend Developers">Backend Developers</a></li>
-          <li><a href="#" class="filter-link" data-type="DevOps Engineers">DevOps Engineers</a></li>
-          <li><a href="#" class="filter-link" data-type="Android Developers">Android Developers</a></li>
-          <li><a href="#" class="filter-link" data-type="Cyber Security Engineers">Cyber Security Engineers</a></li> 
-        </ul>
-      </div>
-
-      <!-- Design & Creative -->
-      <div class="category">
-       <a href="design-creative.html" class="lin"><button class="category-btn"
-        
-        >Design & Creative <span class="arrow">›</span></button>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Brand & Logo Designers">Brand & Logo Designers</a></li>
-          <li><a href="#" class="filter-link" data-type="Graphic Designers">Graphic Designers</a></li>
-          <li><a href="#" class="filter-link" data-type="UX Designers">UX Designers</a></li>
-          <li><a href="#" class="filter-link" data-type="Instagram Reel Editors">Instagram Reel Editors</a></li>
-          <li><a href="#" class="filter-link" data-type="Youtube Video Editors">Youtube Video Editors</a></li>
-          <li><a href="#" class="filter-link" data-type="Videographers">Videographers</a></li>
-          <li><a href="#" class="filter-link" data-type="Web Designers">Web Designers</a></li>
-        </ul>
-      </div>
-
-      <!-- Sales & Marketing -->
-      <div class="category">
-        <a href="sales-marketing.html" class="lin"><button class="category-btn">Sales & Marketing <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Branding Experts">Branding Experts</a></li>
-          <li><a href="#" class="filter-link" data-type="Business Development Managers">Business Development Managers</a></li>
-          <li><a href="#" class="filter-link" data-type="Digital Marketers">Digital Marketers</a></li>
-          <li><a href="#" class="filter-link" data-type="Facebook Ads Specialists">Facebook Ads Specialists</a></li>
-          <li><a href="#" class="filter-link" data-type="Ecommerce Consultants">Ecommerce Consultants</a></li>
-        </ul>
-      </div>
-
-      <!-- Writing & Translation -->
-      <div class="category">
-       <a href="writing-translation.html" class="lin"><button class="category-btn">Writing & Translation <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Academic Writers">Academic Writers</a></li>
-          <li><a href="#" class="filter-link" data-type="Business Plan Writers">Business Plan Writers</a></li>
-          <li><a href="#" class="filter-link" data-type="Copy Editors">Copy Editors</a></li>
-          <li><a href="#" class="filter-link" data-type="Creative Writers">Creative Writers</a></li>
-          <li><a href="#" class="filter-link" data-type="English to Spanish Translators">English to Spanish Translators</a></li>
-        </ul>
-      </div>
-
-      <!-- Admin & Support -->
+            <!-- Data & AI -->
             <div class="category">
-               <a href="admin-support.html" class="lin"> <button class="category-btn">Admin & Support <span class="arrow">›</span></button></a>
+                <a href="data-ai.html" class="lin"><button class="category-btn">Data & AI <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Data Analysis & Visualization">Data Analysis &
+                            Visualization</a></li>
+                    <li><a href="#" class="filter-link" data-type="Machine Learning Models">Machine Learning Models</a>
+                    </li>
+                    <li><a href="#" class="filter-link" data-type="Data Engineering">Data Engineering</a></li>
+                    <li><a href="#" class="filter-link" data-type="Deep Learning">Deep Learning</a></li>
+                    <li><a href="#" class="filter-link" data-type="Predictive Analytics">Predictive Analytics</a></li>
+                    <li><a href="#" class="filter-link" data-type="Generative AI">Generative AI</a></li>
+                </ul>
+            </div>
+
+            <!-- Development & IT -->
+            <div class="category">
+                <a href="development-it.html" class="lin"><button class="category-btn">Development & IT <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="" class="filter-link" data-type="Full Stack Engineers">Full Stack Engineers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Backend Developers">Backend Developers</a></li>
+                    <li><a href="#" class="filter-link" data-type="DevOps Engineers">DevOps Engineers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Android Developers">Android Developers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Cyber Security Engineers">Cyber Security
+                            Engineers</a></li>
+                </ul>
+            </div>
+
+            <!-- Design & Creative -->
+            <div class="category">
+                <a href="design-creative.html" class="lin"><button class="category-btn">Design & Creative <span
+                            class="arrow">›</span></button>
+                    <ul class="sub-categories">
+                        <li><a href="#" class="filter-link" data-type="Brand & Logo Designers">Brand & Logo
+                                Designers</a></li>
+                        <li><a href="#" class="filter-link" data-type="Graphic Designers">Graphic Designers</a></li>
+                        <li><a href="#" class="filter-link" data-type="UX Designers">UX Designers</a></li>
+                        <li><a href="#" class="filter-link" data-type="Instagram Reel Editors">Instagram Reel
+                                Editors</a></li>
+                        <li><a href="#" class="filter-link" data-type="Youtube Video Editors">Youtube Video Editors</a>
+                        </li>
+                        <li><a href="#" class="filter-link" data-type="Videographers">Videographers</a></li>
+                        <li><a href="#" class="filter-link" data-type="Web Designers">Web Designers</a></li>
+                    </ul>
+            </div>
+
+            <!-- Sales & Marketing -->
+            <div class="category">
+                <a href="sales-marketing.html" class="lin"><button class="category-btn">Sales & Marketing <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Branding Experts">Branding Experts</a></li>
+                    <li><a href="#" class="filter-link" data-type="Business Development Managers">Business Development
+                            Managers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Digital Marketers">Digital Marketers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Facebook Ads Specialists">Facebook Ads
+                            Specialists</a></li>
+                    <li><a href="#" class="filter-link" data-type="Ecommerce Consultants">Ecommerce Consultants</a></li>
+                </ul>
+            </div>
+
+            <!-- Writing & Translation -->
+            <div class="category">
+                <a href="writing-translation.html" class="lin"><button class="category-btn">Writing & Translation <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Academic Writers">Academic Writers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Business Plan Writers">Business Plan Writers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Copy Editors">Copy Editors</a></li>
+                    <li><a href="#" class="filter-link" data-type="Creative Writers">Creative Writers</a></li>
+                    <li><a href="#" class="filter-link" data-type="English to Spanish Translators">English to Spanish
+                            Translators</a></li>
+                </ul>
+            </div>
+
+            <!-- Admin & Support -->
+            <div class="category">
+                <a href="admin-support.html" class="lin"> <button class="category-btn">Admin & Support <span
+                            class="arrow">›</span></button></a>
                 <ul class="sub-categories">
                     <li><a href="#" class="filter-link" data-type="Personal Assistants">Personal Assistants</a></li>
                     <li><a href="#" class="filter-link" data-type="Google Docs Experts">Google Docs Experts</a></li>
@@ -225,50 +294,63 @@
                 </ul>
             </div>
 
-      <!-- Finance & Accounting -->
-      <div class="category">
-       <a href="finance-accounting.html" class="lin"><button class="category-btn">Finance & Accounting <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Business Analysts">Business Analysts</a></li>
-          <li><a href="#" class="filter-link" data-type="Financial Analysts">Financial Analysts</a></li>
-          <li><a href="#" class="filter-link" data-type="Management Consultants">Management Consultants</a></li>
-          <li><a href="#" class="filter-link" data-type="Data Entry Specialists">Data Entry Specialists</a></li>
-          <li><a href="#" class="filter-link" data-type="Financial Reporting Analysts">Financial Reporting Analysts</a></li>
-        </ul>
-      </div>
+            <!-- Finance & Accounting -->
+            <div class="category">
+                <a href="finance-accounting.html" class="lin"><button class="category-btn">Finance & Accounting <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Business Analysts">Business Analysts</a></li>
+                    <li><a href="#" class="filter-link" data-type="Financial Analysts">Financial Analysts</a></li>
+                    <li><a href="#" class="filter-link" data-type="Management Consultants">Management Consultants</a>
+                    </li>
+                    <li><a href="#" class="filter-link" data-type="Data Entry Specialists">Data Entry Specialists</a>
+                    </li>
+                    <li><a href="#" class="filter-link" data-type="Financial Reporting Analysts">Financial Reporting
+                            Analysts</a></li>
+                </ul>
+            </div>
 
-      <!-- Legal -->
-      <div class="category">
-       <a href="legal.html" class="lin"><button class="category-btn">Legal <span class="arrow">›</span></button></a>
-        <ul class="sub-categories">
-          <li><a href="#" class="filter-link" data-type="Corporate Law Professionals">Corporate Law Professionals</a></li>
-          <li><a href="#" class="filter-link" data-type="Immigration Law Professionals">Immigration Law Professionals</a></li>
-          <li><a href="#" class="filter-link" data-type="Legal Advisors">Legal Advisors</a></li>
-          <li><a href="#" class="filter-link" data-type="Legal Consultants">Legal Consultants</a></li>
-        </ul>
-      </div>
-     <!-- HR & Training -->
-<div class="category">
-  <a href="hr-training.html" class="lin"><button class="category-btn">HR & Training <span class="arrow">›</span></button></a>
-  <ul class="sub-categories">
-    <li><a href="#" class="filter-link" data-type="Employee Engagement Specialists">Employee Engagement Specialists</a></li>
-    <li><a href="#" class="filter-link" data-type="Leadership Development Specialists">Leadership Development Specialists</a></li>
-    <li><a href="#" class="filter-link" data-type="Technical Recruiters">Technical Recruiters</a></li>
-    <li><a href="#" class="filter-link" data-type="Curriculum Developers">Curriculum Developers</a></li>
-  </ul>
-</div>
+            <!-- Legal -->
+            <div class="category">
+                <a href="legal.html" class="lin"><button class="category-btn">Legal <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Corporate Law Professionals">Corporate Law
+                            Professionals</a></li>
+                    <li><a href="#" class="filter-link" data-type="Immigration Law Professionals">Immigration Law
+                            Professionals</a></li>
+                    <li><a href="#" class="filter-link" data-type="Legal Advisors">Legal Advisors</a></li>
+                    <li><a href="#" class="filter-link" data-type="Legal Consultants">Legal Consultants</a></li>
+                </ul>
+            </div>
+            <!-- HR & Training -->
+            <div class="category">
+                <a href="hr-training.html" class="lin"><button class="category-btn">HR & Training <span
+                            class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="Employee Engagement Specialists">Employee Engagement
+                            Specialists</a></li>
+                    <li><a href="#" class="filter-link" data-type="Leadership Development Specialists">Leadership
+                            Development Specialists</a></li>
+                    <li><a href="#" class="filter-link" data-type="Technical Recruiters">Technical Recruiters</a></li>
+                    <li><a href="#" class="filter-link" data-type="Curriculum Developers">Curriculum Developers</a></li>
+                </ul>
+            </div>
 
-      <!-- Engineering & Architecture -->
-<div class="category">
-   <a href="engineering-architecture.html" class="lin"><button class="category-btn">Engineer & Architecture <span class="arrow">›</span></button></a>
-    <ul class="sub-categories">
-      <li><a href="#" class="filter-link" data-type="AutoCAD Developers">AutoCAD Developers</a></li>
-      <li><a href="#" class="filter-link" data-type="Engineering Consultants">Engineering Consultants</a></li>
-      <li><a href="#" class="filter-link" data-type="Interior Architects">Interior Architects</a></li>
-      <li><a href="#" class="filter-link" data-type="Architectural Modelers">Architectural Modelers</a></li>
-    </ul>
-</div>
-</aside>
+            <!-- Engineering & Architecture -->
+            <div class="category">
+                <a href="engineering-architecture.html" class="lin"><button class="category-btn">Engineer & Architecture
+                        <span class="arrow">›</span></button></a>
+                <ul class="sub-categories">
+                    <li><a href="#" class="filter-link" data-type="AutoCAD Developers">AutoCAD Developers</a></li>
+                    <li><a href="#" class="filter-link" data-type="Engineering Consultants">Engineering Consultants</a>
+                    </li>
+                    <li><a href="#" class="filter-link" data-type="Interior Architects">Interior Architects</a></li>
+                    <li><a href="#" class="filter-link" data-type="Architectural Modelers">Architectural Modelers</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
         <!-- ===== MAIN CONTENT ===== -->
         <main class="cards-grid" id="freelancer-grid">
 
@@ -332,7 +414,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-    <p>© 2025 Task Hunt — All rights reserved</p>
+            <p>© 2025 Task Hunt — All rights reserved</p>
         </div>
     </footer>
 
@@ -368,5 +450,5 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/navbar.js"></script>
     <script src="../../assets/js/categories.js"></script>
-   
+
 </body>
