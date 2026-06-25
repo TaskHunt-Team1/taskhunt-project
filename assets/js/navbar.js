@@ -83,7 +83,7 @@
     .th-notif-item:hover { background:#eef5ff; }
 
     .th-nav .th-toggle { display:none; font-size:22px; cursor:pointer; color:#333; background:none; border:none; }
-    @media (max-width:px) {
+    @media (max-width:768px) {
       .th-nav .th-links {
         display:none; flex-direction:column; gap:0;
         position:fixed; top:60px; left:0; right:0;
