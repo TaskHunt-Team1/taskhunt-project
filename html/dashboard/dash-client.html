@@ -148,51 +148,42 @@ function timeAgo(d) {
 }
 
 const notifIcon = { proposal_received:'📩', proposal_accepted:'🎉', proposal_rejected:'❌', new_message:'💬' };
-
 async function loadNotifications() {
+  const list = document.getElementById('notifDropList');
+  const badge = document.getElementById('notifCount');
+
+  if (!list || !badge) return;
+
   try {
-   const list = document.getElementById('notifDropList');
-const badge = document.getElementById('notifCount');
-const notifs = await get('/notifications');
-if (!list || !badge) return;
+    const notifs = await get('/notifications');
+
     const unread = notifs.filter(n => !n.is_read).length;
+
     badge.textContent = unread > 9 ? '9+' : unread;
     badge.style.display = unread > 0 ? 'flex' : 'none';
 
-    if (!notifs.length) { list.innerHTML = '<div class="notif-empty">No notifications yet</div>'; return; }
+    if (!notifs.length) {
+      list.innerHTML = '<div class="notif-empty">No notifications yet</div>';
+      return;
+    }
+
     list.innerHTML = notifs.map(n => `
-      <div class="notif-item ${n.is_read ? '' : 'unread'}" onclick="handleNotif(${n.id},'${n.ref_type}',${n.ref_id})">
+      <div class="notif-item ${n.is_read ? '' : 'unread'}"
+           onclick="handleNotif(${n.id}, '${n.ref_type}', ${n.ref_id})">
         <div class="notif-icon">${notifIcon[n.type] || '🔔'}</div>
         <div class="notif-content">
           <div class="notif-title">${n.title}</div>
           <div class="notif-body">${n.body}</div>
           <div class="notif-time">${timeAgo(n.created_at)}</div>
         </div>
-      </div>`).join('');
-  } catch(e) { list.innerHTML = '<div class="notif-empty">Failed to load</div>'; }
-}
+      </div>
+    `).join('');
 
-async function handleNotif(id, refType, refId) {
-  await fetch(`/api/notifications/${id}/read`, { method:'PUT', headers:{'Authorization':'Bearer '+Auth.token()} });
-  if (refType === 'conversation') window.location.href = `../../html/chat.html?id=${refId}`;
-  loadNotifications();
+  } catch (e) {
+    list.innerHTML = '<div class="notif-empty">Failed to load</div>';
+    console.error(e);
+  }
 }
-
-async function markAllRead(e) {
-  e.stopPropagation();
-  await fetch('/api/notifications/read-all', { method:'PUT', headers:{'Authorization':'Bearer '+Auth.token()} });
-  loadNotifications();
-}
-
-async function pollNotifCount() {
-  try {
-    const data = await get('/notifications/unread-count');
-const badge = document.getElementById('notifCount');
-if (!badge) return;    badge.textContent = data.count > 9 ? '9+' : data.count;
-    badge.style.display = data.count > 0 ? 'flex' : 'none';
-  } catch(_) {}
-}
-
 // ── Posts & Proposals ────────────────────────────────────────────
 async function loadDashboard() {
   try {
@@ -372,9 +363,8 @@ async function deleteMyPost(id) {
     alert(e.message);
   }
 }
-
 async function editPost(id) {
-  window.location.href = `../post-job.html?edit=${id}`;
+  window.location.href = `../post-a-job.html?edit=${id}`;
 }
 // ── Init ─────────────────────────────
 loadDashboard();
