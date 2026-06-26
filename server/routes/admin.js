@@ -4,6 +4,19 @@ const jwt    = require('jsonwebtoken');
 const db     = require('../database');
 const { SECRET } = require('../middleware/auth');
 
+/*💡 نصيحة للمناقشة: متقوليش "استخدمت router.get وrouter.post وخلاص"، اربطي كل واحدة بوظيفتها في النظام. يعني:
+
+requireAdmin → حماية الـ APIs.
+GET → جلب بيانات وعرضها في الفرونت.
+POST → إضافة بيانات جديدة.
+DELETE → حذف البيانات وتحديث الواجهة.
+bcrypt → تشفير كلمات المرور.
+JWT → التحقق من هوية الأدمن.
+SQLite (أو قاعدة البيانات المستخدمة) → تخزين واسترجاع البيانات.
+
+بالطريقة دي هيبان إنك فاهمة دورة الطلب كاملة من الفرونت → الباك → قاعدة البيانات → الرجوع للفرونت.*/
+
+
 // ── Admin auth middleware ─────────────────────────────────────────
 function requireAdmin(req, res, next) {
   const header = req.headers['authorization'];

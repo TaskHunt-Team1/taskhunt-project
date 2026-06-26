@@ -195,11 +195,12 @@ joinBtn.addEventListener("click", () => {
         alert("Please choose Freelancer or Client first");
         return;
     }
-
+    //تحويل المستخدم إلى صفحة تسجيل الـ Freelancer وكلاينت.
     if (selectedRadio.value === "freelancer") {
-        window.location.href = "freelancer.html"; // غيرها باسم صفحتك
+        //وبعدها بستخدم window.location.href لتحويله إلى صفحة التسجيل
+        window.location.href = "freelancer.html";
     } else {
-        window.location.href = "client.html"; // غيرها باسم صفحتك
+        window.location.href = "client.html"; 
     }
 });
 </script>

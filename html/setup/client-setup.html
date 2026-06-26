@@ -10,7 +10,15 @@
   <script src="/assets/js/theme.js"></script>
 </head>
 <body>
+/*ليه الـ Client بيطلب بيانات أقل؟
 
+لأن العميل هو اللي بينشر المشروع فقط، فالموقع محتاج يعرف معلومات بسيطة عنه، زي:
+
+صورة (اختياري لتحسين الثقة)
+Display Name
+نبذة (About You)
+
+وده كفاية عشان الفريلانسر يعرف مين صاحب المشروع.*/
 <!-- Top bar -->
 <div class="setup-topbar">
   <a href="../../html/home.html" class="logo">Task<span>Hunt</span></a>
@@ -138,7 +146,7 @@ async function submitProfile() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Failed to save profile');
-
+//الكومنت اللى بيظهر للمستخدم لما يدخل البيانات
     suc.textContent = 'Profile saved! Redirecting...';
     suc.style.display = 'block';
     setTimeout(() => window.location.href = '../client-home.html', 1500);

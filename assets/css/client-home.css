@@ -505,6 +505,12 @@ nav ul li a:hover {
 }
 
 /* Responsive */
+@media (max-width:768px){
+  .search-box{
+    margin-left:0;
+    max-width:100%;
+  }
+}
 
 @media(max-width:1100px){
   .trending-grid{ grid-template-columns:repeat(2,1fr); }
@@ -672,159 +678,171 @@ h3 {
     height: 35px;
   }
 }
-/*features section*/
-/* Container Section */
-.features {
-    padding: 60px 20px;
-    text-align: center;
-    direction: ltr; /* تم التعديل للإنجليزية بناءً على محتوى الكروت، اجعليها rtl لو النصوص عربية */
-    font-family: "Cairo", sans-serif;
-    background-color: #fff;
+/* ================= FEATURES SECTION ================= */
+
+.features-section{
+    width:100%;
+    padding:80px 15px;
+    background:#f8fbff;
+    overflow-x:hidden;
+    box-sizing:border-box;
 }
 
-.features-title {
-    font-size: 28px;
-    margin-bottom: 50px;
-    color: var(--c1);
-    font-weight: 700;
+.features-section .container{
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* Grid Box */
-.features-box {
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 أعمدة متساوية */
-    gap: 30px;
-    align-items: stretch; /* يضمن أن جميع الكروت في الصف لها نفس الارتفاع */
+.section-header{
+    text-align:center;
+    margin-bottom:50px;
 }
 
-/* Individual Card */
-:root {
-    --primary-color: #0090E0;
-    --text-dark:--dark-blue;
-    --text-gray:--dark-blue;
-    --card-bg: #ffffff;
-    --section-bg: #f8fbff; /* خلفية هادئة جداً لتمييز القسم */
+.features-title{
+    font-size:36px;
+    font-weight:800;
+    color:#051923;
+    margin-bottom:15px;
 }
 
-.features-section {
-    padding: 100px 0;
-    background-color: var(--section-bg);
-    font-family: 'Inter', 'Cairo', sans-serif;
+.features-subtitle{
+    max-width:600px;
+    margin:auto;
+    color:#666;
+    font-size:17px;
+    line-height:1.7;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:30px;
+    width:100%;
 }
 
-/* الترويسة */
-.section-header {
-    text-align: center;
-    margin-bottom: 60px;
+.feature-card{
+    width:100%;
+    box-sizing:border-box;
+    background:#fff;
+    padding:40px 25px;
+    border-radius:24px;
+    border:1px solid rgba(0,144,224,.08);
+    text-align:center;
+    overflow:hidden;
+    transition:.35s;
 }
 
-.features-title {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    letter-spacing: -1px;
+.feature-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
 }
 
-.features-subtitle {
-    color: var(--text-gray);
-    font-size: 17px;
-    max-width: 600px;
-    margin: 0 auto;
+.icon-wrapper{
+    width:100px;
+    height:100px;
+    margin:0 auto 25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f2f8ff;
+    border-radius:50%;
 }
 
-/* الشبكة الاحترافية */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
+.icon-wrapper img{
+    width:65px;
+    height:65px;
+    object-fit:contain;
 }
 
-/* الكارت الاحترافي */
-.feature-card {
-    background: var(--card-bg);
-    padding: 45px 30px;
-    border-radius: 24px;
-    border: 1px solid rgba(0, 144, 224, 0.08); /* إطار خفيف جداً */
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
-    overflow: hidden;
+.feature-card h3{
+    font-size:24px;
+    margin-bottom:15px;
+    color:#051923;
 }
 
-.feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(145deg, rgba(0, 144, 224, 0.05) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+.feature-card p{
+    font-size:16px;
+    color:#666;
+    line-height:1.7;
 }
 
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 30, 0, 0.08);
-    border-color: var(--primary-color);
+/* ================= Tablet ================= */
+
+@media(max-width:992px){
+
+.features-grid{
+grid-template-columns:repeat(2,1fr);
 }
 
-.feature-card:hover::before {
-    opacity: 1;
 }
 
-/* تنسيق الصور */
-.icon-wrapper {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f0f7ff;
-    border-radius: 50%; /* شكل دائري أنيق للصور */
-    transition: transform 0.4s ease;
+/* ================= Mobile ================= */
+
+@media(max-width:768px){
+
+.features-section{
+padding:60px 15px;
 }
 
-.feature-card:hover .icon-wrapper {
-    transform: scale(1.1);
+.features-grid{
+grid-template-columns:1fr;
+gap:20px;
 }
 
-.icon-wrapper img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
+.feature-card{
+padding:30px 20px;
 }
 
-/* النصوص داخل الكارت */
-.feature-card h3 {
-    font-size: 22px;
-    color: var(--text-dark);
-    margin-bottom: 15px;
-    font-weight: 700;
-    position: relative;
+.features-title{
+font-size:28px;
 }
 
-.feature-card p {
-    font-size: 15px;
-    color: var(--text-gray);
-    line-height: 1.7;
-    position: relative;
+.features-subtitle{
+font-size:15px;
 }
 
-/* موبايل وتجاوب */
-@media (max-width: 480px) {
-    .features-title { font-size: 28px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .feature-card { padding: 30px 20px; }
+.icon-wrapper{
+width:85px;
+height:85px;
 }
 
+.icon-wrapper img{
+width:55px;
+height:55px;
+}
+
+}
+
+/* ================= Small Mobile ================= */
+
+@media(max-width:480px){
+
+.features-section{
+padding:50px 12px;
+}
+
+.features-grid{
+grid-template-columns:1fr;
+gap:18px;
+}
+
+.feature-card{
+padding:25px 18px;
+border-radius:18px;
+}
+
+.feature-card h3{
+font-size:22px;
+}
+
+.feature-card p{
+font-size:15px;
+}
+
+}
 /* TRUST SECTION */
 .trust {
   display: flex;
@@ -1471,4 +1489,107 @@ body.dark-mode #dark-mode-btn { color: #c5d4e3 !important; }
     60% { transform: rotate(-5deg); }
     75% { transform: rotate(2deg); }
     100% { transform: rotate(0deg); }
+}
+/* ====== حل مشكلة المسافة البيضاء على الموبايل ====== */
+
+/* 1. منع أي overflow في الصفحة كلها */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. تأمين كل العناصر */
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 3. تصحيح الـ hero-wrapper */
+.hero-wrapper {
+    max-width: 100%;
+    padding: 30px 20px !important;
+    overflow: hidden;
+}
+
+/* 4. تصحيح الـ categories عشان تظهر صح */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px 15px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.category {
+    width: 100%;
+    max-width: 230px;
+    height: 75px;
+    margin: 0 auto;
+    padding: 15px 20px;
+}
+
+/* 5. تصحيح الـ hero-image */
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 6. تصحيح الـ hero-left */
+.hero-left {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* 7. تصحيح الـ search-box */
+.search-box-container {
+    max-width: 100%;
+}
+
+.search-input-wrapper {
+    flex-wrap: wrap;
+}
+
+.search-input-wrapper input {
+    min-width: 150px;
+}
+
+/* 8. تصحيح أي عنصر عريض */
+.container, .content, .features-grid, .testimonials-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* 9. تصحيح الـ footer inputs */
+.footer-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 10. تصحيح الـ cards في التابليت */
+@media (max-width: 992px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .hero-wrapper {
+        padding: 20px 15px !important;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem !important;
+    }
+    
+    .testimonials-container {
+        padding: 0 10px;
+    }
 }
