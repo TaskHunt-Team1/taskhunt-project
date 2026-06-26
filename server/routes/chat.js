@@ -1,9 +1,27 @@
+//استخدمت Express Router لعمل APIs.
 const router = require('express').Router();
+//استخدمت Database للتعامل مع SQLite.
 const db     = require('../database');
+//استخدمت requireAuth علشان أي مستخدم يدخل الشات لازم يكون عامل Login.
 const { requireAuth } = require('../middleware/auth');
 
 // ── Specific routes FIRST (before /:id wildcard) ─────────────────────────────
-
+/*الكود ده مسؤول عن إدارة الشات بالكامل
+، زي جلب المحادثات، وجلب الرسائل، وإرسال رسالة جديدة،
+ وإنشاء محادثة مباشرة، وحساب عدد الرسائل غير المقروءة،
+ مع التأكد إن المستخدم مسجل دخول ومسموح له يشوف المحادثة */
+ /*
+ أهم الدوال المستخدمة
+الدالة	وظيفتها
+router.get()	جلب المحادثات أو الرسائل.
+router.post()	إنشاء محادثة أو إرسال رسالة.
+requireAuth	التأكد إن المستخدم عامل Login قبل الدخول للشات.
+db.prepare().get()	جلب سجل واحد.
+db.prepare().all()	جلب كل البيانات.
+db.prepare().run()	تنفيذ Insert أو Update.
+JOIN	ربط أكثر من جدول للحصول على بيانات متكاملة مثل اسم المستخدم وعنوان المشروع.
+res.json()	إرسال البيانات للفرونت بصيغة JSON.
+ */
 // GET /api/chat/conversations
 router.get('/conversations', requireAuth, (req, res) => {
   const uid = req.user.id;
@@ -29,6 +47,7 @@ router.get('/conversations', requireAuth, (req, res) => {
 });
 
 // GET /api/chat/unread — total unread (must be before /:id)
+//كام رسالة المستخدم لسه مقرأهاش.
 router.get('/unread', requireAuth, (req, res) => {
   const uid = req.user.id;
   const p = db.prepare(`
@@ -76,6 +95,16 @@ router.get('/direct', requireAuth, (req, res) => {
 });
 
 // POST /api/chat/direct/with/:userId — get or create direct conversation
+//دي لما المستخدم يضغط
+//Message
+//على بروفايل شخص.
+//الباك يعمل:
+//لو فيه Conversation موجودة
+//يفتحها.
+//لو مش موجودة
+//ينشئ واحدة جديدة.
+//ثم يرجع بياناتها.
+
 router.post('/direct/with/:userId', requireAuth, (req, res) => {
   const uid     = req.user.id;
   const otherId = Number(req.params.userId);
@@ -102,6 +131,7 @@ router.post('/direct/with/:userId', requireAuth, (req, res) => {
 });
 
 // GET /api/chat/direct/:id/messages
+//دي لإرسال رسالة.
 router.get('/direct/:id/messages', requireAuth, (req, res) => {
   const uid  = req.user.id;
   const conv = db.prepare('SELECT * FROM direct_conversations WHERE id=?').get(req.params.id);

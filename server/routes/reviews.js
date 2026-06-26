@@ -1,7 +1,11 @@
 const router = require('express').Router();
 const db     = require('../database');
 const { requireAuth } = require('../middleware/auth');
-
+/*
+"الكود ده مسؤول عن إدارة التقييمات، يعني عرض تقييمات الفريلانسر، والتأكد
+ إذا كان المشروع اتعمله تقييم قبل كده، والسماح للفريلانسر يطلب تقييم من العميل
+، والسماح للعميل بإضافة تقييم بعد انتهاء المشروع، وبعدها يتم إرسال إشعار للفريلانسر."
+*/
 // GET /api/reviews/freelancer/:id — public
 router.get('/freelancer/:id', (req, res) => {
   const rows = db.prepare(`
@@ -87,3 +91,28 @@ router.post('/', requireAuth, (req, res) => {
 });
 
 module.exports = router;
+/*
+Reviews Flow:
+
+1- بعد انتهاء المشروع، الفريلانسر يطلب من العميل عمل Review.
+2- الباك إند يرسل Notification للعميل.
+3- العميل يفتح الإشعار ويضيف Rating و Comment.
+4- الفرونت يرسل بيانات التقييم للـ API.
+5- الباك إند يتحقق من صلاحية المستخدم وصحة البيانات.
+6- يتم حفظ الـ Review في قاعدة البيانات.
+7- يتم إرسال Notification للفريلانسر بوجود تقييم جديد.
+8- يمكن لأي مستخدم عرض تقييمات الفريلانسر من صفحة البروفايل.
+*/
+/*
+أهم الدوال المستخدمة
+الدالة	وظيفتها
+router.get()	جلب التقييمات أو التحقق من وجود تقييم.
+router.post()	إرسال طلب تقييم أو إضافة تقييم جديد.
+requireAuth	التأكد إن المستخدم عامل Login.
+req.params	قراءة Conversation ID أو Freelancer ID من الرابط.
+req.body	استقبال بيانات التقييم من الفرونت.
+db.prepare().get()	جلب سجل واحد.
+db.prepare().all()	جلب كل التقييمات.
+db.prepare().run()	تنفيذ Insert.
+res.json()	إرسال البيانات للفرونت بصيغة JSON.
+*/

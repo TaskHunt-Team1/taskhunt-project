@@ -1,6 +1,10 @@
+//استخدمت Express Router لإنشاء الـ APIs.
 const router = require('express').Router();
+//استخدمت Database للتعامل مع قاعدة البيانات.
 const db     = require('../database');
-
+//"الكود ده مسؤول عن جلب بيانات الفريلانسرز من قاعدة البيانات
+// ، مع إمكانية فلترة النتائج حسب التخصص، والتخصص الفرعي، وسعر الساعة،
+//  وبعدها يرجع البيانات للفرونت عشان يعرضها في صفحة الـ Freelancers.
 // GET /api/freelancers — returns registered freelancers with complete profiles
 router.get('/', (req, res) => {
   const { category, sub_category, min_price, max_price, limit = 500, offset = 0 } = req.query;
@@ -38,6 +42,7 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/freelancers/categories — list of distinct categories
+//لما المستخدك يفتح صفحه فريلانسر الباك بيروح للداتا بيز وبيجيب كل الفريلانس اللى كملو البروفايل
 router.get('/categories', (_, res) => {
   res.json(
     db.prepare(
@@ -46,3 +51,14 @@ router.get('/categories', (_, res) => {
   );
 });
 module.exports = router;
+/*
+أهم الدوال المستخدمة
+الدالة	وظيفتها
+router.get()	إنشاء API لجلب البيانات.
+req.query	استقبال قيم الفلاتر من الفرونت.
+db.prepare().all()	تنفيذ استعلام SQL وجلب جميع النتائج.
+JOIN	ربط جدول users مع freelancer_profiles للحصول على بيانات كاملة.
+res.json()	إرسال البيانات للفرونت بصيغة JSON.
+COALESCE()	لو قيمة غير موجودة، يستخدم قيمة بديلة (مثل اسم المستخدم الأساسي أو تقييم افتراضي).
+LIMIT و OFFSET	لتحديد عدد النتائج ودعم تقسيم الصفحات (Pagination).
+ */

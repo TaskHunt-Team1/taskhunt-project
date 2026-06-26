@@ -208,3 +208,40 @@ router.patch('/:id/proposals/:pid', requireAuth, (req, res) => {
 });
 
 module.exports = router;
+/*
+/*
+Posts & Proposals Flow:
+
+1- العميل ينشئ Post جديد.
+2- الفرونت يرسل البيانات للـ API.
+3- الباك إند يحفظ الـ Post في قاعدة البيانات.
+4- الفريلانسر يعرض المشاريع ويرسل Proposal.
+5- الباك إند يحفظ الـ Proposal ويرسل Notification للعميل.
+6- العميل يعرض جميع الـ Proposals.
+7- عند قبول Proposal:
+   - يتم قبول Proposal المختار.
+   - يتم رفض باقي الـ Proposals.
+   - يتم غلق الـ Post.
+   - يتم إنشاء Conversation بين العميل والفريلانسر.
+   - يتم إرسال Notification للفريلانسر.
+8- الفرونت يستقبل البيانات ويحدث الواجهة أو يفتح صفحة الشات.
+*/
+
+/*
+أهم الدوال المستخدمة
+الدالة	وظيفتها
+router.get()	جلب المشاريع أو تفاصيلها أو الـ Proposals.
+router.post()	إنشاء مشروع أو إرسال Proposal.
+router.put()	تعديل مشروع.
+router.delete()	حذف مشروع.
+router.patch()	تغيير حالة الـ Proposal (Accept أو Reject).
+requireAuth	التأكد إن المستخدم عامل Login.
+req.body	استقبال البيانات من الفرونت.
+req.params	قراءة الـ ID من الرابط.
+req.query	استقبال الفلاتر.
+db.prepare().get()	جلب سجل واحد.
+db.prepare().all()	جلب مجموعة سجلات.
+db.prepare().run()	تنفيذ Insert أو Update أو Delete.
+res.json()	إرسال البيانات للفرونت بصيغة JSON.
+
+*/

@@ -4,8 +4,7 @@ const jwt    = require('jsonwebtoken');
 const db     = require('../database');
 const { SECRET } = require('../middleware/auth');
 
-/*💡 نصيحة للمناقشة: متقوليش "استخدمت router.get وrouter.post وخلاص"، اربطي كل واحدة بوظيفتها في النظام. يعني:
-
+/*
 requireAdmin → حماية الـ APIs.
 GET → جلب بيانات وعرضها في الفرونت.
 POST → إضافة بيانات جديدة.
@@ -13,11 +12,17 @@ DELETE → حذف البيانات وتحديث الواجهة.
 bcrypt → تشفير كلمات المرور.
 JWT → التحقق من هوية الأدمن.
 SQLite (أو قاعدة البيانات المستخدمة) → تخزين واسترجاع البيانات.
+-------------------------------------------------------------------------
+"الفرونت لما بيحتاج بيانات أو يعمل أي عملية زي إضافة أو حذف، بيبعت 
+Request للـ API باستخدام fetch أو axios. الطلب ده بيروح للـ Express Router في الباك إند. لو
+ الـ API محمي، بيعدي الأول على requireAdmin عشان يتأكد إن اللي بعت الطلب أدمن عن طريق الـ 
+ JWT Token. بعد كده الباك إند ينفذ استعلام على الداتابيز باستخدام db.prepare()،
+ سواء يجيب بيانات أو يضيف أو يحذف. ولما يخلص، بيرجع النتيجة في شكل 
+ JSON باستخدام res.json()، والفرونت يستقبلها ويعرضها أو يحدث الصفحة."
+*/
 
-بالطريقة دي هيبان إنك فاهمة دورة الطلب كاملة من الفرونت → الباك → قاعدة البيانات → الرجوع للفرونت.*/
-
-
-// ── Admin auth middleware ─────────────────────────────────────────
+// ── Admin auth middleware ──
+//تتاكد ان المستخدم ادمن لو صح بيكمل لو غلط بيرجع ايرور
 function requireAdmin(req, res, next) {
   const header = req.headers['authorization'];
   const token  = header && header.split(' ')[1];
@@ -36,6 +41,7 @@ function requireAdmin(req, res, next) {
 router.get('/stats', requireAdmin, (req, res) => {
   res.json({
     users:       db.prepare('SELECT COUNT(*) as n FROM users').get().n,
+    //بيجمع عدد المستخدمين والبوستات والبروبوزال عشان الفرونت يعرضهم في الداشبورد
     clients:     db.prepare("SELECT COUNT(*) as n FROM users WHERE role='client'").get().n,
     freelancers: db.prepare("SELECT COUNT(*) as n FROM users WHERE role='freelancer'").get().n,
     posts:       db.prepare('SELECT COUNT(*) as n FROM posts').get().n,
@@ -52,6 +58,7 @@ router.get('/users', requireAdmin, (req, res) => {
 });
 
 // GET /api/admin/accounts — list all admin accounts
+//يجمع كل حاسابات الادمن ويرجعهم للفرونت
 router.get('/accounts', requireAdmin, (req, res) => {
   const rows = db.prepare(
     'SELECT id, name, email, created_at FROM admins ORDER BY id'
@@ -60,6 +67,7 @@ router.get('/accounts', requireAdmin, (req, res) => {
 });
 
 // POST /api/admin/accounts — add new admin
+//يتأكد ان البيانات والايميل مش موجود قبل كده يعني اكونت جديد
 router.post('/accounts', requireAdmin, (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password)
@@ -68,7 +76,10 @@ router.post('/accounts', requireAdmin, (req, res) => {
   if (db.prepare('SELECT id FROM admins WHERE email = ?').get(email))
     return res.status(409).json({ error: 'This email is already registered as admin' });
 
+  //يشفر الباسورد
+
   const hash   = bcrypt.hashSync(password, 10);
+  //الداتا بتروح الداتا بيز عن طريق db.prepare(...)
   const result = db.prepare(
     'INSERT INTO admins (name, email, password) VALUES (?, ?, ?)'
   ).run(name, email, hash);
@@ -82,8 +93,10 @@ router.delete('/accounts/:id', requireAdmin, (req, res) => {
   if (isNaN(id)) return res.status(400).json({ error: 'Invalid ID' });
   if (id === req.admin.id) return res.status(400).json({ error: 'You cannot delete your own account' });
 
+  //لما اضغط حذف  الداتا بتروح الداتا بيز عن طريق db.prepare(...) 
   const changes = db.prepare('DELETE FROM admins WHERE id = ?').run(id).changes;
   if (!changes) return res.status(404).json({ error: 'Admin not found' });
+  //بيرجع الرساله دي 
   res.json({ message: 'Admin deleted successfully' });
 });
 

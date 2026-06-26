@@ -187,7 +187,7 @@ const API = 'https://taskhunt-project-production.up.railway.app/api';  const PAG
   // ── Fetch & init ──────────────────────────────────────────────────────────────
   async function init() {
     if (!grid) return;
-    grid.innerHTML = '<p style="padding:2rem;text-align:center;color:#888;">Loading...</p>';
+    grid.innerHTML = '<p Sales & Marketingtyle="padding:2rem;text-align:center;color:#888;">Loading...</p>';
 
     try {
       const params = PAGE_CATEGORY ? 'category=' + encodeURIComponent(PAGE_CATEGORY) + '&limit=200' : 'limit=200';

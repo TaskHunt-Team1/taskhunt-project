@@ -4,6 +4,24 @@ const jwt     = require('jsonwebtoken');
 const db      = require('../database');
 const { SECRET } = require('../middleware/auth');
 
+/*
+"الكود ده مسؤول عن تسجيل المستخدم، وتسجيل الدخول،
+ وجلب بياناته، وتعديل بياناته، وتغيير الباسورد، وكمان عرض الـ 
+ Proposals 
+ اللي الفريلانسر قدمها."*/
+
+ /* Login Flow:
+1- المستخدم يدخل الـ Email والـ Password في صفحة الـ Login.
+2- الفرونت يبعت البيانات للـ Login API.
+3- الباك إند يدور على المستخدم في قاعدة البيانات.
+4- يقارن الباسورد المدخل مع الباسورد المشفر باستخدام bcrypt.compareSync().
+5- لو البيانات صحيحة، ينشئ JWT Token.
+6- الباك إند يرجع الـ Token وبيانات المستخدم للفرونت.
+7- الفرونت يخزن الـ Token.
+8- في أي Request محمي بعد كده، الفرونت يبعت الـ Token في الـ Authorization Header.
+9- الباك إند يتحقق من الـ Token قبل تنفيذ أي عملية، ولو كان صحيح يسمح للمستخدم بالوصول.
+*/
+
 // POST /api/auth/register
 router.post('/register', (req, res) => {
   const { name, email, password, role } = req.body;
@@ -13,15 +31,16 @@ router.post('/register', (req, res) => {
 
   if (!['client', 'freelancer'].includes(role))
     return res.status(400).json({ error: 'Role must be client or freelancer' });
-
+  //✅ يشوف الإيميل موجود قبل كده ولا لأ
   const exists = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
   if (exists) return res.status(409).json({ error: 'Email already registered' });
 
   const hash = bcrypt.hashSync(password, 10);
   const result = db.prepare(
+    //✅ يحفظ المستخدم
     'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)'
   ).run(name, email, hash, role);
-
+  //علشان المستخدم يفضل Logged in.
   const token = jwt.sign(
     { id: result.lastInsertRowid, name, email, role },
     SECRET,
@@ -100,6 +119,7 @@ router.put('/password', require('../middleware/auth').requireAuth, (req, res) =>
   const valid = bcrypt.compareSync(current_password, user.password);
   if (!valid) return res.status(401).json({ error: 'Current password is incorrect' });
 
+//عشان محدش يشوف الباسوورد الحقيقي في الداتا بيز
   const hash = bcrypt.hashSync(new_password, 10);
   db.prepare('UPDATE users SET password = ? WHERE id = ?').run(hash, req.user.id);
   res.json({ message: 'Password changed successfully' });

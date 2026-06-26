@@ -1,7 +1,12 @@
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
-
+/*
+"ده الملف الرئيسي للـ Backend.
+ بيشغل السيرفر، ويضيف الـ Middleware، ويربط كل ملفات الـ Routes الخاصة بالـ APIs،
+  ويعرض ملفات الفرونت إند
+  ، وبعد كده يبدأ يستقبل أي Request من المستخدم ويرسله للـ Route المناسب."
+*/
 const app = express();
 
 app.use(cors());

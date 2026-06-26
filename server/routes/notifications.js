@@ -1,8 +1,23 @@
+
+/*الكود ده مسؤول عن الإشعارات (Notifications) في الموقع.
+
+يعني أي إشعار زي:
+
+رسالة جديدة.
+Proposal جديد.
+أي تنبيه للمستخدم.
+
+الـ API دي هي اللي بتجيب الإشعارات وتحدد إذا كانت اتقرت ولا لأ.*/
+//استخدمت Express Router لعمل APIs.
 const router = require('express').Router();
+//استخدمت Database للتعامل مع قاعدة البيانات.
 const db     = require('../database');
+//استخدمت requireAuth علشان محدش يقدر يشوف إشعارات غير لو عامل Login.
 const { requireAuth } = require('../middleware/auth');
 
 // GET /api/notifications — my notifications
+//لما المستخدم يضغط على أيقونة الجرس 🔔.
+//الباك بيتاكد ان المتخدم مسجل دخول وبيجيب اخر 50 اشعار 
 router.get('/', requireAuth, (req, res) => {
   const rows = db.prepare(`
     SELECT * FROM notifications
@@ -32,3 +47,24 @@ router.put('/read-all', requireAuth, (req, res) => {
 });
 
 module.exports = router;
+/*أهم الدوال المستخدمة
+الدالة	وظيفتها
+router.get()	جلب الإشعارات أو عدد الإشعارات غير المقروءة.
+router.put()	تحديث حالة الإشعار إلى مقروء.
+requireAuth	التأكد إن المستخدم عامل Login.
+db.prepare().all()	جلب كل الإشعارات.
+db.prepare().get()	جلب قيمة واحدة مثل عدد الإشعارات.
+db.prepare().run()	تنفيذ عملية Update.
+res.json()	إرسال البيانات للفرونت بصيغة JSON.
+*/
+
+/*
+Notifications Flow:
+
+1- عند حدوث حدث جديد (مثل رسالة)، يتم حفظ Notification في قاعدة البيانات.
+2- الفرونت يرسل GET Request لجلب إشعارات المستخدم.
+3- الباك إند يجلب الإشعارات من جدول notifications.
+4- يعيدها للفرونت بصيغة JSON ليتم عرضها.
+5- عند فتح إشعار أو الضغط على "Mark All As Read"،
+   يرسل الفرونت PUT Request لتحديث حالة الإشعار إلى Read.
+*/
