@@ -273,6 +273,8 @@ function renderMessages(msgs) {
 function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 
 // ── Rating system ─────────────────────────────────────────────────
+//"الفنكشن checkAndShowRateBtnدي بتتأكد إذا كان المشروع اتعمله Review قبل كده ولا لا. لو موجود بتعرض عدد النجوم
+// ، ولو مش موجود بتظهر زرار التقييم."
 async function checkAndShowRateBtn(conv) {
   const rateBtn = document.getElementById('rateBtn');
   if (!rateBtn) return;
