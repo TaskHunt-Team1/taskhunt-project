@@ -34,12 +34,12 @@ nav {
 
 nav ul {
   list-style: none;
-  display: flex;
-  gap: 30px;
+  display: flex; /*بيخلي الروابط جنب بعض.*/
+  gap: 30px;/*المسافه ال بين اللنكات*/
 }
 nav ul li a {
   color: var(--c4);
-  text-decoration: none;
+  text-decoration: none;/*يشيل الخط تحت الرابط*/
   font-size: 18px;
   transition: 0.3s;
 }
