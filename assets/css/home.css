@@ -115,9 +115,9 @@ nav ul li a:hover {
 
 .hero-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: row;/*لترتيب يكون من اليسار لليمين.*/
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between;/*وزع النص ناحية والصورة ناحية تانية.*/
     background: white;
     padding: 50px 60px; 
     border-radius: 40px;
@@ -126,7 +126,9 @@ nav ul li a:hover {
     width: 100%;
     gap: 40px;
 }
-
+ 
+/*الجزء الشمال من الـ Hero.
+يحتوي على العنوان والوصف والبحث والأزرار.*/
 .hero-left {
     flex: 1.5; 
     text-align: left;
