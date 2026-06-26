@@ -1450,3 +1450,106 @@ body.dark-mode .section-main-title,
 body.dark-mode .trending-header h2 { color: #e8f1fb; }
 body.dark-mode h3 { color: #e8f1fb; }
 body.dark-mode #dark-mode-btn { color: #c5d4e3 !important; }
+/* ====== حل مشكلة المسافة البيضاء على الموبايل ====== */
+
+/* 1. منع أي overflow في الصفحة كلها */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* 2. تأمين كل العناصر */
+* {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 3. تصحيح الـ hero-wrapper */
+.hero-wrapper {
+    max-width: 100%;
+    padding: 30px 20px !important;
+    overflow: hidden;
+}
+
+/* 4. تصحيح الـ categories عشان تظهر صح */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px 15px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.category {
+    width: 100%;
+    max-width: 230px;
+    height: 75px;
+    margin: 0 auto;
+    padding: 15px 20px;
+}
+
+/* 5. تصحيح الـ hero-image */
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 6. تصحيح الـ hero-left */
+.hero-left {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* 7. تصحيح الـ search-box */
+.search-box-container {
+    max-width: 100%;
+}
+
+.search-input-wrapper {
+    flex-wrap: wrap;
+}
+
+.search-input-wrapper input {
+    min-width: 150px;
+}
+
+/* 8. تصحيح أي عنصر عريض */
+.container, .content, .features-grid, .testimonials-container {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* 9. تصحيح الـ footer inputs */
+.footer-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 10. تصحيح الـ cards في التابليت */
+@media (max-width: 992px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .hero-wrapper {
+        padding: 20px 15px !important;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem !important;
+    }
+    
+    .testimonials-container {
+        padding: 0 10px;
+    }
+}
