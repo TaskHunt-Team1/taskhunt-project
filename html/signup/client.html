@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -282,6 +282,14 @@
 
 <script src="../../assets/js/api.js"></script>
 <script>
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    if (el) {
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+  }
+
   document.getElementById('signupForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn  = document.getElementById('submitBtn');

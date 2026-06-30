@@ -41,11 +41,11 @@ function requireAdmin(req, res, next) {
 router.get('/stats', requireAdmin, (req, res) => {
   res.json({
     users:       db.prepare('SELECT COUNT(*) as n FROM users').get().n,
-    //بيجمع عدد المستخدمين والبوستات والبروبوزال عشان الفرونت يعرضهم في الداشبورد
     clients:     db.prepare("SELECT COUNT(*) as n FROM users WHERE role='client'").get().n,
     freelancers: db.prepare("SELECT COUNT(*) as n FROM users WHERE role='freelancer'").get().n,
     posts:       db.prepare('SELECT COUNT(*) as n FROM posts').get().n,
     proposals:   db.prepare('SELECT COUNT(*) as n FROM proposals').get().n,
+    revenue:     db.prepare("SELECT COALESCE(SUM(price) * 0.15, 0) as revenue FROM proposals WHERE status='accepted'").get().revenue,
   });
 });
 

@@ -12,24 +12,29 @@ router.get('/:id/profile', (req, res) => {
 
   if (user.role === 'freelancer') {
     const profile = db.prepare('SELECT * FROM freelancer_profiles WHERE user_id=?').get(userId);
-    const stats   = db.prepare(`
+    const propStats = db.prepare(`
       SELECT
-        CAST(COALESCE(SUM(CASE WHEN pr.status='accepted' THEN 1 ELSE 0 END), 0) AS INTEGER) AS projects_done,
-        ROUND(AVG(CASE WHEN pr.status='accepted' THEN pr.price END), 2)                     AS avg_price,
-        ROUND(AVG(rv.rating), 1)                                                             AS avg_rating,
-        CAST(COUNT(DISTINCT rv.id) AS INTEGER)                                               AS review_count
-      FROM proposals pr
-      LEFT JOIN reviews rv ON rv.freelancer_id = ?
-      WHERE pr.user_id = ?
-    `).get(userId, userId);
+        CAST(COALESCE(SUM(CASE WHEN status='accepted' THEN 1 ELSE 0 END), 0) AS INTEGER) AS projects_done,
+        ROUND(AVG(CASE WHEN status='accepted' THEN price END), 2) AS avg_price
+      FROM proposals
+      WHERE user_id = ?
+    `).get(userId);
+
+    const reviewStats = db.prepare(`
+      SELECT
+        ROUND(AVG(rating), 1) AS avg_rating,
+        CAST(COUNT(*) AS INTEGER) AS review_count
+      FROM reviews
+      WHERE freelancer_id = ?
+    `).get(userId);
 
     return res.json({
       ...user,
       ...(profile || {}),
-      projects_done: stats?.projects_done || 0,
-      avg_price:     stats?.avg_price     || null,
-      avg_rating:    stats?.avg_rating    || null,
-      review_count:  stats?.review_count  || 0
+      projects_done: propStats?.projects_done || 0,
+      avg_price:     propStats?.avg_price     || null,
+      avg_rating:    reviewStats?.avg_rating    || null,
+      review_count:  reviewStats?.review_count  || 0
     });
   } else {
     const profile = db.prepare('SELECT * FROM client_profiles WHERE user_id=?').get(userId);

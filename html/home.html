@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,7 +25,7 @@
 
   <ul class="nav-links">
     <li><a href="work.html">Find Work</a></li>
-    <li><a href="hie-talent.html">Hire Talent</a></li>
+    <li><a href="hire-talent.html">Hire Talent</a></li>
     <li><a href="#about-section">About</a></li>
     <li><a href="#contact-section">Contact</a></li>
   </ul>
@@ -490,7 +490,7 @@
 <script src="/assets/js/navbar.js"></script>
 <script>
 document.getElementById("hireBtn").addEventListener("click", function () {
-    window.location.href = "/html/hie-talent.html";
+    window.location.href = "/html/hire-talent.html";
 });
 
 document.getElementById("workBtn").addEventListener("click", function () {
@@ -512,6 +512,7 @@ document.getElementById("workBtn").addEventListener("click", function () {
   async function loadPosts() {
     const container = document.getElementById('posts-container');
     const loading   = document.getElementById('posts-loading');
+    if (!container || !loading) return;
     try {
       const posts = await getPosts('limit=6');
       loading.style.display = 'none';
@@ -534,27 +535,30 @@ document.getElementById("workBtn").addEventListener("click", function () {
   loadPosts();
 
   // Post job form
-  document.getElementById('post-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('[type=submit]');
-    btn.disabled = true; btn.textContent = 'Posting...';
-    try {
-      await createPost({
-        title:       document.getElementById('p-title').value,
-        description: document.getElementById('p-desc').value,
-        budget:      document.getElementById('p-budget').value || 0,
-        category:    document.getElementById('p-category').value
-      });
-      document.getElementById('post-modal').style.display = 'none';
-      this.reset();
-      loadPosts();
-    } catch(err) {
-      const el = document.getElementById('post-error');
-      el.textContent = err.message; el.style.display = 'block';
-    } finally {
-      btn.disabled = false; btn.textContent = 'Post Job';
-    }
-  });
+  const postForm = document.getElementById('post-form');
+  if (postForm) {
+    postForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('[type=submit]');
+      btn.disabled = true; btn.textContent = 'Posting...';
+      try {
+        await createPost({
+          title:       document.getElementById('p-title').value,
+          description: document.getElementById('p-desc').value,
+          budget:      document.getElementById('p-budget').value || 0,
+          category:    document.getElementById('p-category').value
+        });
+        document.getElementById('post-modal').style.display = 'none';
+        this.reset();
+        loadPosts();
+      } catch(err) {
+        const el = document.getElementById('post-error');
+        if (el) { el.textContent = err.message; el.style.display = 'block'; }
+      } finally {
+        btn.disabled = false; btn.textContent = 'Post Job';
+      }
+    });
+  }
 </script>
 </body>
 

@@ -6,7 +6,7 @@
  */
 
 (function () {
-const API = 'https://taskhunt-project-production.up.railway.app/api';  const PAGE_CATEGORY = (window.PAGE_CONFIG && window.PAGE_CONFIG.category) || null;
+const API = '/api';  const PAGE_CATEGORY = (window.PAGE_CONFIG && window.PAGE_CONFIG.category) || null;
   const BATCH = 9; // cards shown per load-more
 
   let allCards = [];   // cached freelancers from API
@@ -187,7 +187,7 @@ const API = 'https://taskhunt-project-production.up.railway.app/api';  const PAG
   // ── Fetch & init ──────────────────────────────────────────────────────────────
   async function init() {
     if (!grid) return;
-    grid.innerHTML = '<p Sales & Marketingtyle="padding:2rem;text-align:center;color:#888;">Loading...</p>';
+    grid.innerHTML = '<p style="padding:2rem;text-align:center;color:#888;">Loading...</p>';
 
     try {
       const params = PAGE_CATEGORY ? 'category=' + encodeURIComponent(PAGE_CATEGORY) + '&limit=200' : 'limit=200';

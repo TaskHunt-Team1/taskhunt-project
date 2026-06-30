@@ -116,7 +116,7 @@
     </div>
     <ul class="th-links" id="thLinks">
       <li><a href="/html/work.html">Find Work</a></li>
-      <li><a href="/html/hie-talent.html">Hire Talent</a></li>
+      <li><a href="/html/hire-talent.html">Hire Talent</a></li>
       <li><a href="/html/about.html">About</a></li>
       <li><a href="/html/contact-us.html">Contact</a></li>
     </ul>

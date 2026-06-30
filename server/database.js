@@ -6,6 +6,7 @@ const Database = require('better-sqlite3');
 const path = require('path');
 
 const db = new Database(path.join(__dirname, '..', 'taskhunt.db'));
+db.exec('PRAGMA foreign_keys = ON;');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -141,10 +142,40 @@ db.exec(`
   );
 `);
 
-// Seeded freelancers removed — only registered users appear in Hire Talent
-if (false && db.prepare('SELECT COUNT(*) as n FROM freelancers').get().n === 0) {
-  const ins = db.prepare('INSERT INTO freelancers (name,role_text,category,sub_category,hourly_rate,experience_years,rating,skills,image_url) VALUES (?,?,?,?,?,?,?,?,?)');
-  const seed = db.transaction(rows => { for (const r of rows) ins.run(...r); });
+// Seeded freelancers
+if (db.prepare('SELECT COUNT(*) as n FROM freelancer_profiles').get().n === 0) {
+  const bcrypt = require('bcryptjs');
+  const hash = bcrypt.hashSync('freelancer123', 4);
+  const insUser = db.prepare("INSERT INTO users (name, email, password, role, avatar) VALUES (?, ?, ?, 'freelancer', ?)");
+  const insProfile = db.prepare(`
+    INSERT INTO freelancer_profiles (
+      user_id, display_name, avatar, title, bio, skills, category, sub_category, experience_level, hourly_rate, profile_complete
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+  `);
+
+  const seed = db.transaction(rows => {
+    let index = 1;
+    for (const r of rows) {
+      const [name, role_text, category, sub_category, hourly_rate, experience_years, rating, skills, image_url] = r;
+      const email = name.toLowerCase().replace(/[^a-z0-9]/g, '') + (index++) + '@seed.th';
+      
+      // Insert user
+      const userRes = insUser.run(name, email, hash, image_url);
+      const userId = userRes.lastInsertRowid;
+
+      // Map experience_years to experience_level
+      let expLevel = 'intermediate';
+      if (experience_years < 3) expLevel = 'beginner';
+      else if (experience_years > 5) expLevel = 'expert';
+
+      // Convert skills to JSON array string
+      const skillsArr = skills.split(',').map(s => s.trim()).filter(Boolean);
+      const skillsJson = JSON.stringify(skillsArr);
+
+      // Insert profile
+      insProfile.run(userId, name, image_url, role_text, `Hi, I am ${name}. I specialize in ${sub_category}.`, skillsJson, category, sub_category, expLevel, hourly_rate);
+    }
+  });
   seed([
     // ── Data & AI ──────────────────────────────────────────────────────────
     ['Ahmed Samir','Data Analyst – dashboards & reports','Data & AI','Data Analysis & Visualization',25,5,4.8,'Excel,Power BI,SQL','/assets/images/userimages/men/1.jfif'],
@@ -301,12 +332,13 @@ if (false && db.prepare('SELECT COUNT(*) as n FROM freelancers').get().n === 0) 
   ]);
 }
 
-// Seeded posts removed — only real user-created posts appear in Find Work
-if (false && db.prepare("SELECT COUNT(*) as n FROM posts WHERE title='Excel Data Analysis & Power BI Dashboard'").get().n === 0) {
+// Seeded posts and client profiles
+if (db.prepare('SELECT COUNT(*) as n FROM client_profiles').get().n === 0) {
   const bcrypt = require('bcryptjs');
   const hash   = bcrypt.hashSync('taskhunt_seed', 4); // low cost — dev seed only
 
   const insUser = db.prepare("INSERT OR IGNORE INTO users (name, email, password, role) VALUES (?, ?, ?, 'client')");
+  const insClientProfile = db.prepare("INSERT OR IGNORE INTO client_profiles (user_id, display_name, profile_complete) VALUES (?, ?, 1)");
   const getUserId = (email) => db.prepare("SELECT id FROM users WHERE email = ?").get(email).id;
 
   const seedClients = [
@@ -329,7 +361,11 @@ if (false && db.prepare("SELECT COUNT(*) as n FROM posts WHERE title='Excel Data
     ['Reem Hany',      'reemhany@seed.th'],
   ];
 
-  for (const [name, email] of seedClients) insUser.run(name, email, hash);
+  for (const [name, email] of seedClients) {
+    insUser.run(name, email, hash);
+    const userId = getUserId(email);
+    insClientProfile.run(userId, name);
+  }
 
   const insPost = db.prepare('INSERT INTO posts (title, description, budget, category, user_id) VALUES (?, ?, ?, ?, ?)');
   const seedPosts = db.transaction(rows => { for (const r of rows) insPost.run(...r); });

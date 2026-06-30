@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -849,7 +849,7 @@
         <!-- LINKS -->
         <ul class="nav-links" id="navLinks">
             <li><a href="work.html">Find Work</a></li>
-            <li><a href="hie-talent.html">Hire Talent</a></li>
+            <li><a href="hire-talent.html">Hire Talent</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
 
@@ -1341,16 +1341,20 @@ function filterJobs() {
   document.getElementById('applyModal').addEventListener('click', function(e) {
     if (e.target === this) closeApply();
   });
-// ── view all jobs ───────────────────────────────────────────
+  const openPostModalBtn = document.getElementById('open-post-modal-btn');
+  if (openPostModalBtn) {
+    openPostModalBtn.onclick = () => {
+      window.location.href = 'post-a-job.html';
+    };
+  }
 
-  document.getElementById('open-post-modal-btn').onclick = () => {
-    window.location.href = 'post-a-job.html';
-};
-
-document.getElementById('nav-post-btn').onclick = (e) => {
-    e.preventDefault();
-    window.location.href = 'post-a-job.html';
-};
+  const navPostBtn = document.getElementById('nav-post-btn');
+  if (navPostBtn) {
+    navPostBtn.onclick = (e) => {
+      e.preventDefault();
+      window.location.href = 'post-a-job.html';
+    };
+  }
   
 </script>
 </body>

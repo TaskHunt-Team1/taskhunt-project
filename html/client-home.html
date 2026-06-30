@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -22,7 +22,7 @@
   </div>
   <ul class="nav-links">
     <li><a href="work.html">Find Work</a></li>
-    <li><a href="hie-talent.html">Hire Talent</a></li>
+    <li><a href="hire-talent.html">Hire Talent</a></li>
     <li><a href="#about-section">About</a></li>
     <li><a href="#contact-section">Contact</a></li>
   </ul>
@@ -371,7 +371,7 @@
     }
 });
 document.getElementById("hireBtn").addEventListener("click", function () {
-    window.location.href = "/html/hie-talent.html";
+    window.location.href = "/html/hire-talent.html";
 });
 
 document.getElementById("workBtn").addEventListener("click", function () {
@@ -696,26 +696,30 @@ async function runProgress(postId) {
 }
 
 // ── Submit form ───────────────────────────────────────────
-document.getElementById('post-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('post-submit-btn');
-  btn.disabled = true; btn.textContent = 'Publishing...';
-  document.getElementById('post-error').style.display = 'none';
+const postFormClient = document.getElementById('post-form');
+if (postFormClient) {
+  postFormClient.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('post-submit-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Publishing...'; }
+    const postErr = document.getElementById('post-error');
+    if (postErr) postErr.style.display = 'none';
 
-  try {
-    const result = await createPost({
-      title:       document.getElementById('p-title').value,
-      description: document.getElementById('p-desc').value,
-      budget:      Number(document.getElementById('p-budget').value) || 0,
-      category:    document.getElementById('p-category').value
-    });
-    await runProgress(result.id);
-  } catch(err) {
-    const el = document.getElementById('post-error');
-    el.textContent = err.message; el.style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Publish Job';
-  }
-});
+    try {
+      const result = await createPost({
+        title:       document.getElementById('p-title').value,
+        description: document.getElementById('p-desc').value,
+        budget:      Number(document.getElementById('p-budget').value) || 0,
+        category:    document.getElementById('p-category').value
+      });
+      await runProgress(result.id);
+    } catch(err) {
+      const el = document.getElementById('post-error');
+      if (el) { el.textContent = err.message; el.style.display = 'block'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'Publish Job'; }
+    }
+  });
+}
 </script>
 </body>
 </html>

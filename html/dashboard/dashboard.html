@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1414,6 +1414,7 @@ async function deleteJob(id) {
                 platformStats.totalUsers   = stats.users     || 0;
                 platformStats.activeJobs   = stats.posts     || 0;
                 platformStats.reportsCount = stats.proposals || 0;
+                platformStats.totalRevenue = stats.revenue   || 0;
             } catch(e) { console.error('Stats:', e.message); }
 
             try {
